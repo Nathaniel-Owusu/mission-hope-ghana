@@ -1,0 +1,23 @@
+# System files
+.DS_Store
+Thumbs.db
+*.bak
+
+# Temporary/Debug files
+debug_*.php
+fix_*.php
+insert_test.php
+temp_*.php
+*.log
+
+# User Uploads (Keep directory but ignore content if desired, though here we permit it for now unless it gets huge)
+# /gallery_uploads/*
+# !/gallery_uploads/.gitkeep
+
+# Saved web pages clutter
+localhost _ 127.0.0.1 _ missionhope _ announcements _ phpMyAdmin 5.2.1_files/
+
+# Dependencies
+node_modules/
+vendor/
+.env
