@@ -11,12 +11,12 @@ $dbname = "missionhope";
 // Detect if we are on a live server (You can change 'localhost' to your actual domain logic if needed)
 // For now, you can manually uncomment the lines below when uploading to your hosting provider:
 
-/*
+
 $server = "localhost"; // Usually 'localhost' on shared hosting too
-$username = "u123456789_missionhope"; // Your hosting database username
-$password = "YourDBPassword123!"; // Your hosting database password
-$dbname = "u123456789_missionhope"; // Your hosting database name
-*/
+$username = "u957056558_owusuansahnath"; // Your hosting database username
+$password = "48a:3(\$yGaczK.~"; // Your hosting database password
+$dbname = "u957056558_missionhope"; // Your hosting database name
+
 
 $conn = new mysqli($server, $username, $password, $dbname);
 
