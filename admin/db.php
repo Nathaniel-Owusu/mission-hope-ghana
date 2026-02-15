@@ -12,10 +12,10 @@ $dbname = "missionhope";
 // For now, you can manually uncomment the lines below when uploading to your hosting provider:
 
 
-$server = "localhost"; // Usually 'localhost' on shared hosting too
-$username = "u957056558_owusuansahnath"; // Your hosting database username
-$password = "48a:3(\$yGaczK.~"; // Your hosting database password
-$dbname = "u957056558_missionhope"; // Your hosting database name
+// $server = "localhost"; // Usually 'localhost' on shared hosting too
+// $username = "YOUR_HOSTING_DB_USER"; // Your hosting database username
+// $password = "YOUR_HOSTING_DB_PASSWORD"; // Your hosting database password
+// $dbname = "YOUR_HOSTING_DB_NAME"; // Your hosting database name
 
 
 $conn = new mysqli($server, $username, $password, $dbname);
