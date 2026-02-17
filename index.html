@@ -42,10 +42,10 @@
     <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-4">
         <div class="container mx-auto px-6 flex justify-between items-center">
             <a href="#" class="flex items-center gap-2 group">
-                <img src="sdalogo.png" alt="Mission Hope Logo" class="h-12 w-auto drop-shadow-lg transition-transform group-hover:rotate-6">
-                <div class="hidden md:block text-white drop-shadow-md">
-                    <span class="block text-xl font-serif font-bold leading-none tracking-wide">MISSION HOPE</span>
-                    <span class="block text-[10px] uppercase tracking-[0.2em] opacity-90">Seventh-Day Adventist Church</span>
+                <img src="sdalogo.png" alt="Mission Hope Logo" class="h-10 w-auto drop-shadow-lg transition-transform group-hover:rotate-6">
+                <div class="text-white drop-shadow-md">
+                    <span class="block text-lg md:text-xl font-serif font-bold leading-none tracking-wide">MISSION HOPE</span>
+                    <span class="block text-[8px] md:text-[10px] uppercase tracking-[0.2em] opacity-90">Seventh-Day Adventist Church</span>
                 </div>
             </a>
 
@@ -454,8 +454,11 @@
                     }
                 });
                  // Handle Logo Text Color
-                navbar.querySelector('.text-white').classList.remove('text-white');
-                navbar.querySelector('.hidden.md\\:block').classList.add('text-brand-dark');
+                const logoText = navbar.querySelector('.drop-shadow-md');
+                if(logoText) {
+                    logoText.classList.remove('text-white');
+                    logoText.classList.add('text-brand-dark');
+                }
 
             } else {
                 navbar.classList.remove('bg-white/90', 'backdrop-blur-md', 'shadow-md', 'py-3');
@@ -467,8 +470,11 @@
                         link.classList.remove('text-gray-800');
                     }
                 });
-                navbar.querySelector('.text-brand-dark').classList.add('text-white');
-                navbar.querySelector('.hidden.md\\:block').classList.remove('text-brand-dark');
+                const logoText = navbar.querySelector('.drop-shadow-md');
+                if(logoText) {
+                    logoText.classList.add('text-white');
+                    logoText.classList.remove('text-brand-dark');
+                }
             }
         });
 
