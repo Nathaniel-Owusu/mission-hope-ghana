@@ -1,3 +1,6 @@
+<?php
+include 'admin/db.php';
+?>
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
@@ -48,12 +51,11 @@
 <body class="bg-brand-cream text-gray-800 antialiased selection:bg-brand-gold selection:text-white">
 
     <!-- Navigation -->
-    <!-- Navigation -->
-    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-4">
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-4 bg-white/90 backdrop-blur-md shadow-md">
         <div class="container mx-auto px-6 flex justify-between items-center">
-            <a href="index.html" class="flex items-center gap-2 group">
-                <img src="sdalogo.png" alt="Mission Hope Logo" class="h-12 w-auto drop-shadow-lg transition-transform group-hover:rotate-6">
-                <div class="hidden md:block text-white drop-shadow-md">
+            <a href="index.php" class="flex items-center gap-2 group">
+                <img src="sdalogo.png" alt="Mission Hope Logo" class="h-10 w-auto drop-shadow-lg transition-transform group-hover:rotate-6">
+                <div class="hidden md:block text-brand-dark drop-shadow-md">
                     <span class="block text-xl font-serif font-bold leading-none tracking-wide">MISSION HOPE</span>
                     <span class="block text-[10px] uppercase tracking-[0.2em] opacity-90">Seventh-Day Adventist Church</span>
                 </div>
@@ -61,30 +63,18 @@
 
             <!-- Desktop Menu -->
             <div class="hidden md:flex items-center space-x-8">
-                <a href="index.html" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Home</a>
-                <a href="about.html" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">About</a>
-                <a href="ministries.html" class="text-brand-gold font-bold transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-full after:h-0.5 after:bg-brand-gold after:transition-all">Ministries</a>
-                <a href="leadership.html" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Leadership</a>
-                <a href="gallery.html" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Gallery</a>
-                <a href="contact.html" class="px-6 py-2 bg-brand-gold/90 hover:bg-brand-gold text-white rounded-full font-semibold transition-all shadow-lg hover:shadow-brand-gold/50 transform hover:-translate-y-0.5 backdrop-blur-sm">Contact Us</a>
+                <a href="index.php" class="text-gray-800 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Home</a>
+                <a href="about.html" class="text-gray-800 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">About</a>
+                <a href="ministries.php" class="text-brand-gold font-bold transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-full after:h-0.5 after:bg-brand-gold after:transition-all">Ministries</a>
+                <a href="leadership.php" class="text-gray-800 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Leadership</a>
+                <a href="gallery.php" class="text-gray-800 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Gallery</a>
+                <a href="contact.php" class="px-6 py-2 bg-brand-gold/90 hover:bg-brand-gold text-white rounded-full font-semibold transition-all shadow-lg hover:shadow-brand-gold/50 transform hover:-translate-y-0.5 backdrop-blur-sm shadow-brand-gold/50">Contact Us</a>
             </div>
 
             <!-- Mobile Button -->
-            <button id="mobile-menu-btn" class="md:hidden text-white text-3xl focus:outline-none transition-transform active:scale-95">
+            <button class="md:hidden text-brand-dark text-3xl focus:outline-none">
                 <ion-icon name="menu-outline"></ion-icon>
             </button>
-        </div>
-
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-brand-dark/95 backdrop-blur-md shadow-xl border-t border-white/10 transition-all duration-300 origin-top transform">
-            <div class="flex flex-col p-6 space-y-6 text-center">
-                <a href="index.html" class="text-white hover:text-brand-gold font-serif font-medium text-lg tracking-widest transition-colors">Home</a>
-                <a href="about.html" class="text-white hover:text-brand-gold font-serif font-medium text-lg tracking-widest transition-colors">About</a>
-                <a href="ministries.html" class="text-white hover:text-brand-gold font-serif font-medium text-lg tracking-widest transition-colors">Ministries</a>
-                <a href="leadership.html" class="text-white hover:text-brand-gold font-serif font-medium text-lg tracking-widest transition-colors">Leadership</a>
-                <a href="gallery.html" class="text-white hover:text-brand-gold font-serif font-medium text-lg tracking-widest transition-colors">Gallery</a>
-                <a href="contact.html" class="inline-block px-8 py-3 bg-brand-gold text-white rounded-full font-bold shadow-lg hover:bg-white hover:text-brand-gold transition-all mx-auto">Contact Us</a>
-            </div>
         </div>
     </nav>
 
@@ -118,115 +108,42 @@
     <section class="py-16 bg-brand-cream">
         <div class="container mx-auto px-6">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                
-                <!-- Ministry 1: Youth -->
+                <?php
+                $result = $conn->query("SELECT * FROM ministries ORDER BY title ASC");
+                if($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        $img = !empty($row['image']) ? $row['image'] : 'youth.jpeg'; 
+                        // Default fallback logic could be better, but this works for now. 
+                        
+                ?>
+                <!-- Ministry Card -->
                 <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group">
                     <div class="h-64 overflow-hidden relative">
                         <div class="absolute inset-0 bg-brand-dark/20 z-10 group-hover:bg-transparent transition-colors"></div>
-                        <img src="youth.jpeg" alt="Youth Ministry" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                        <img src="<?php echo $img; ?>" alt="<?php echo $row['title']; ?>" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
                     </div>
                     <div class="p-8">
                         <div class="flex items-center gap-3 mb-4">
-                            <span class="p-2 bg-brand-cream rounded-full text-brand-gold text-xl"><ion-icon name="bonfire-outline"></ion-icon></span>
-                            <h3 class="text-xl font-bold font-serif text-gray-900">Adventist Youth (AY)</h3>
+                            <span class="p-2 bg-brand-cream rounded-full text-brand-gold text-xl"><ion-icon name="people-outline"></ion-icon></span>
+                            <h3 class="text-xl font-bold font-serif text-gray-900"><?php echo $row['title']; ?></h3>
                         </div>
                         <p class="text-gray-600 text-sm mb-6 leading-relaxed">
-                            A dynamic ministry empowering young people to become leaders, disciples, and evangelists. We engage in Bible study, social activities, and community service.
+                            <?php echo $row['description']; ?>
                         </p>
+                        <?php if(!empty($row['leader_name'])) { ?>
+                        <p class="text-xs text-brand-dark font-bold uppercase tracking-wide mb-4">
+                            Leader: <?php echo $row['leader_name']; ?>
+                        </p>
+                        <?php } ?>
                         <a href="#" class="inline-block text-brand-dark font-bold text-sm uppercase tracking-wider hover:text-brand-gold transition-colors">Learn More &rarr;</a>
                     </div>
                 </div>
-
-                <!-- Ministry 2: Music -->
-                <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group">
-                    <div class="h-64 overflow-hidden relative">
-                         <div class="absolute inset-0 bg-brand-dark/20 z-10 group-hover:bg-transparent transition-colors"></div>
-                        <img src="IMG_1066.jpg" alt="Choir" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
-                    </div>
-                    <div class="p-8">
-                         <div class="flex items-center gap-3 mb-4">
-                            <span class="p-2 bg-brand-cream rounded-full text-brand-gold text-xl"><ion-icon name="musical-notes-outline"></ion-icon></span>
-                            <h3 class="text-xl font-bold font-serif text-gray-900">Music Ministry</h3>
-                        </div>
-                        <p class="text-gray-600 text-sm mb-6 leading-relaxed">
-                            Using the gift of music to glorify God and inspire the congregation. Join our choir, praise team, or instrumental group.
-                        </p>
-                        <a href="#" class="inline-block text-brand-dark font-bold text-sm uppercase tracking-wider hover:text-brand-gold transition-colors">Join the Choir &rarr;</a>
-                    </div>
-                </div>
-
-                 <!-- Ministry 3: Women -->
-                 <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group">
-                    <div class="h-64 overflow-hidden relative">
-                         <div class="absolute inset-0 bg-brand-dark/20 z-10 group-hover:bg-transparent transition-colors"></div>
-                        <img src="IMG_1122.jpg" alt="Women Ministry" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
-                    </div>
-                    <div class="p-8">
-                         <div class="flex items-center gap-3 mb-4">
-                            <span class="p-2 bg-brand-cream rounded-full text-brand-gold text-xl"><ion-icon name="rose-outline"></ion-icon></span>
-                            <h3 class="text-xl font-bold font-serif text-gray-900">Women's Ministry</h3>
-                        </div>
-                        <p class="text-gray-600 text-sm mb-6 leading-relaxed">
-                            Nurturing, empowering, and challenging women to use their gifts for God's glory. We host retreats, bible studies, and support groups.
-                        </p>
-                        <a href="#" class="inline-block text-brand-dark font-bold text-sm uppercase tracking-wider hover:text-brand-gold transition-colors">Get Connected &rarr;</a>
-                    </div>
-                </div>
-
-                 <!-- Ministry 4: Outreach -->
-                 <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group">
-                    <div class="h-64 overflow-hidden relative">
-                         <div class="absolute inset-0 bg-brand-dark/20 z-10 group-hover:bg-transparent transition-colors"></div>
-                        <img src="church bus.jpeg" alt="Outreach" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
-                    </div>
-                    <div class="p-8">
-                         <div class="flex items-center gap-3 mb-4">
-                            <span class="p-2 bg-brand-cream rounded-full text-brand-gold text-xl"><ion-icon name="heart-outline"></ion-icon></span>
-                            <h3 class="text-xl font-bold font-serif text-gray-900">Community Outreach</h3>
-                        </div>
-                        <p class="text-gray-600 text-sm mb-6 leading-relaxed">
-                            Sharing the love of Jesus through acts of kindness, food drives, health expos, and evangelistic efforts in our neighborhood.
-                        </p>
-                        <a href="#" class="inline-block text-brand-dark font-bold text-sm uppercase tracking-wider hover:text-brand-gold transition-colors">Volunteer &rarr;</a>
-                    </div>
-                </div>
-
-                 <!-- Ministry 5: Men's -->
-                 <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group">
-                    <div class="h-64 overflow-hidden relative">
-                         <div class="absolute inset-0 bg-brand-dark/20 z-10 group-hover:bg-transparent transition-colors"></div>
-                        <img src="IMG_1081.JPG" alt="Men Ministry" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
-                    </div>
-                    <div class="p-8">
-                         <div class="flex items-center gap-3 mb-4">
-                            <span class="p-2 bg-brand-cream rounded-full text-brand-gold text-xl"><ion-icon name="construct-outline"></ion-icon></span>
-                            <h3 class="text-xl font-bold font-serif text-gray-900">Men's Ministry</h3>
-                        </div>
-                        <p class="text-gray-600 text-sm mb-6 leading-relaxed">
-                            Equipping men to be spiritual leaders in their homes and communities through fellowship, mentorship, and service.
-                        </p>
-                        <a href="#" class="inline-block text-brand-dark font-bold text-sm uppercase tracking-wider hover:text-brand-gold transition-colors">Join Us &rarr;</a>
-                    </div>
-                </div>
-
-                 <!-- Ministry 6: Children -->
-                 <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group">
-                    <div class="h-64 overflow-hidden relative">
-                         <div class="absolute inset-0 bg-brand-dark/20 z-10 group-hover:bg-transparent transition-colors"></div>
-                        <img src="IMG_1086.jpg" alt="Children Ministry" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
-                    </div>
-                    <div class="p-8">
-                         <div class="flex items-center gap-3 mb-4">
-                            <span class="p-2 bg-brand-cream rounded-full text-brand-gold text-xl"><ion-icon name="happy-outline"></ion-icon></span>
-                            <h3 class="text-xl font-bold font-serif text-gray-900">Children's Ministry</h3>
-                        </div>
-                        <p class="text-gray-600 text-sm mb-6 leading-relaxed">
-                            Guiding children into a loving relationship with Jesus through engaging bible stories, songs, and creative activities.
-                        </p>
-                        <a href="#" class="inline-block text-brand-dark font-bold text-sm uppercase tracking-wider hover:text-brand-gold transition-colors">Learn More &rarr;</a>
-                    </div>
-                </div>
-
+                <?php 
+                    }
+                } else {
+                    echo '<p class="col-span-full text-center text-gray-500 italic">No ministries added yet.</p>';
+                }
+                ?>
             </div>
         </div>
     </section>
@@ -344,7 +261,7 @@
             <p class="text-brand-cream text-lg max-w-2xl mx-auto mb-10">
                 God has equipped you with unique gifts. Let us help you find the perfect place to use them for His kingdom.
             </p>
-            <a href="contact.html" class="inline-block px-8 py-4 bg-brand-gold text-white font-bold rounded-full shadow-lg hover:bg-white hover:text-brand-dark transition-all transform hover:-translate-y-1">
+            <a href="contact.php" class="inline-block px-8 py-4 bg-brand-gold text-white font-bold rounded-full shadow-lg hover:bg-white hover:text-brand-dark transition-all transform hover:-translate-y-1">
                 Contact a Ministry Leader
             </a>
         </div>
@@ -377,11 +294,11 @@
                 <div>
                     <h4 class="text-base font-serif font-bold mb-4 text-gray-100">Quick Links</h4>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="index.html" class="text-gray-400 hover:text-brand-gold transition-colors">Home</a></li>
+                        <li><a href="index.php" class="text-gray-400 hover:text-brand-gold transition-colors">Home</a></li>
                         <li><a href="about.html" class="text-gray-400 hover:text-brand-gold transition-colors">About Us</a></li>
-                        <li><a href="ministries.html" class="text-gray-400 hover:text-brand-gold transition-colors">Ministries</a></li>
-                        <li><a href="leadership.html" class="text-gray-400 hover:text-brand-gold transition-colors">Leadership</a></li>
-                        <li><a href="contact.html" class="text-gray-400 hover:text-brand-gold transition-colors">Contact</a></li>
+                        <li><a href="ministries.php" class="text-gray-400 hover:text-brand-gold transition-colors">Ministries</a></li>
+                        <li><a href="leadership.php" class="text-gray-400 hover:text-brand-gold transition-colors">Leadership</a></li>
+                        <li><a href="contact.php" class="text-gray-400 hover:text-brand-gold transition-colors">Contact</a></li>
                     </ul>
                 </div>
 
@@ -391,7 +308,7 @@
                     <ul class="space-y-3 text-sm">
                         <li class="flex items-start gap-3 text-gray-400">
                             <ion-icon name="location-outline" class="text-lg text-brand-gold mt-1"></ion-icon>
-                            <span>123 Hope Street,<br>Accra, Ghana</span>
+                            <span>Takofiano P.O. Box 162,<br>Techiman, Ghana</span>
                         </li>
                         <li class="flex items-center gap-3 text-gray-400">
                             <ion-icon name="call-outline" class="text-lg text-brand-gold"></ion-icon>
@@ -421,71 +338,6 @@
     </footer>
 
     <script>
-        // Navbar scroll effect
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('bg-white/90', 'backdrop-blur-md', 'shadow-md', 'py-3');
-                navbar.classList.remove('py-6');
-                // Change text colors for light background
-                navbar.querySelectorAll('a').forEach(link => {
-                    if (!link.classList.contains('bg-brand-gold')) { // Don't change button text
-                        link.classList.remove('text-white/90');
-                        link.classList.add('text-gray-800');
-                    }
-                });
-                 // Handle Logo Text Color
-                const logoTextWhite = navbar.querySelector('.text-white');
-                if(logoTextWhite) logoTextWhite.classList.remove('text-white');
-                
-                const logoTextHidden = navbar.querySelector('.hidden.md\\:block');
-                if(logoTextHidden) logoTextHidden.classList.add('text-brand-dark');
-
-                // Mobile button color
-                 const mobileBtn = document.getElementById('mobile-menu-btn');
-                 if(mobileBtn) mobileBtn.classList.remove('text-white');
-                 if(mobileBtn) mobileBtn.classList.add('text-brand-dark');
-
-            } else {
-                navbar.classList.remove('bg-white/90', 'backdrop-blur-md', 'shadow-md', 'py-3');
-                navbar.classList.add('py-6');
-                // Revert text colors
-                navbar.querySelectorAll('a').forEach(link => {
-                    if (!link.classList.contains('bg-brand-gold')) {
-                        link.classList.add('text-white/90');
-                        link.classList.remove('text-gray-800');
-                    }
-                });
-                
-                const logoTextHidden = navbar.querySelector('.hidden.md\\:block');
-                if(logoTextHidden) {
-                    logoTextHidden.classList.add('text-white');
-                    logoTextHidden.classList.remove('text-brand-dark');
-                }
-
-                // Mobile button color
-                 const mobileBtn = document.getElementById('mobile-menu-btn');
-                 if(mobileBtn) mobileBtn.classList.add('text-white');
-                 if(mobileBtn) mobileBtn.classList.remove('text-brand-dark');
-            }
-        });
-
-        // Mobile Menu Toggle
-        const mobileBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        
-        if (mobileBtn && mobileMenu) {
-            mobileBtn.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-                const icon = mobileBtn.querySelector('ion-icon');
-                if (mobileMenu.classList.contains('hidden')) {
-                    icon.setAttribute('name', 'menu-outline');
-                } else {
-                    icon.setAttribute('name', 'close-outline');
-                }
-            });
-        }
-
          // Use Intersection Observer for fade animations
         const observerOptions = {
             threshold: 0.1
@@ -500,8 +352,6 @@
                 }
             });
         }, observerOptions);
-        
-        // Mobile Menu Toggle logic needing implementation if desired
     </script>
 </body>
 </html>

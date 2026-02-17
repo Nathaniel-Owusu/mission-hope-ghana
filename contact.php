@@ -1,3 +1,25 @@
+<?php
+include 'admin/db.php';
+
+$success_msg = "";
+$error_msg = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['send_message'])) {
+    $first_name = $conn->real_escape_string($_POST['first_name']);
+    $last_name = $conn->real_escape_string($_POST['last_name']);
+    $email = $conn->real_escape_string($_POST['email']);
+    $subject = $conn->real_escape_string($_POST['subject']);
+    $message = $conn->real_escape_string($_POST['message']);
+
+    $sql = "INSERT INTO messages (first_name, last_name, email, subject, message) VALUES ('$first_name', '$last_name', '$email', '$subject', '$message')";
+
+    if ($conn->query($sql) === TRUE) {
+        $success_msg = "Thank you! Your message has been sent successfully.";
+    } else {
+        $error_msg = "Error: " . $sql . "<br>" . $conn->error;
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
@@ -48,12 +70,11 @@
 <body class="bg-brand-cream text-gray-800 antialiased selection:bg-brand-gold selection:text-white">
 
     <!-- Navigation -->
-    <!-- Navigation -->
-    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-4">
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-4 bg-white/90 backdrop-blur-md shadow-md">
         <div class="container mx-auto px-6 flex justify-between items-center">
-            <a href="index.html" class="flex items-center gap-2 group">
-                <img src="sdalogo.png" alt="Mission Hope Logo" class="h-12 w-auto drop-shadow-lg transition-transform group-hover:rotate-6">
-                <div class="hidden md:block text-white drop-shadow-md">
+            <a href="index.php" class="flex items-center gap-2 group">
+                <img src="sdalogo.png" alt="Mission Hope Logo" class="h-10 w-auto drop-shadow-lg transition-transform group-hover:rotate-6">
+                <div class="hidden md:block text-brand-dark drop-shadow-md">
                     <span class="block text-xl font-serif font-bold leading-none tracking-wide">MISSION HOPE</span>
                     <span class="block text-[10px] uppercase tracking-[0.2em] opacity-90">Seventh-Day Adventist Church</span>
                 </div>
@@ -61,30 +82,18 @@
 
             <!-- Desktop Menu -->
             <div class="hidden md:flex items-center space-x-8">
-                <a href="index.html" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Home</a>
-                <a href="about.html" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">About</a>
-                <a href="ministries.html" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Ministries</a>
-                <a href="leadership.html" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Leadership</a>
-                <a href="gallery.html" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Gallery</a>
-                <a href="contact.html" class="px-6 py-2 bg-brand-gold hover:bg-brand-gold/90 text-white rounded-full font-semibold transition-all shadow-lg hover:shadow-brand-gold/50 transform hover:-translate-y-0.5 backdrop-blur-sm shadow-brand-gold/50">Contact Us</a>
+                <a href="index.php" class="text-gray-800 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Home</a>
+                <a href="about.html" class="text-gray-800 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">About</a>
+                <a href="ministries.php" class="text-gray-800 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Ministries</a>
+                <a href="leadership.php" class="text-gray-800 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Leadership</a>
+                <a href="gallery.php" class="text-gray-800 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Gallery</a>
+                <a href="contact.php" class="px-6 py-2 bg-brand-gold hover:bg-brand-gold/90 text-white rounded-full font-semibold transition-all shadow-lg hover:shadow-brand-gold/50 transform hover:-translate-y-0.5 backdrop-blur-sm shadow-brand-gold/50">Contact Us</a>
             </div>
 
             <!-- Mobile Button -->
-            <button id="mobile-menu-btn" class="md:hidden text-white text-3xl focus:outline-none transition-transform active:scale-95">
+            <button class="md:hidden text-brand-dark text-3xl focus:outline-none">
                 <ion-icon name="menu-outline"></ion-icon>
             </button>
-        </div>
-
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-brand-dark/95 backdrop-blur-md shadow-xl border-t border-white/10 transition-all duration-300 origin-top transform">
-            <div class="flex flex-col p-6 space-y-6 text-center">
-                <a href="index.html" class="text-white hover:text-brand-gold font-serif font-medium text-lg tracking-widest transition-colors">Home</a>
-                <a href="about.html" class="text-white hover:text-brand-gold font-serif font-medium text-lg tracking-widest transition-colors">About</a>
-                <a href="ministries.html" class="text-white hover:text-brand-gold font-serif font-medium text-lg tracking-widest transition-colors">Ministries</a>
-                <a href="leadership.html" class="text-white hover:text-brand-gold font-serif font-medium text-lg tracking-widest transition-colors">Leadership</a>
-                <a href="gallery.html" class="text-white hover:text-brand-gold font-serif font-medium text-lg tracking-widest transition-colors">Gallery</a>
-                <a href="contact.html" class="inline-block px-8 py-3 bg-brand-gold text-white rounded-full font-bold shadow-lg hover:bg-white hover:text-brand-gold transition-all mx-auto">Contact Us</a>
-            </div>
         </div>
     </nav>
 
@@ -183,7 +192,21 @@
                     <div class="bg-white p-8 md:p-10 rounded-2xl shadow-xl border border-gray-100">
                         <h3 class="text-2xl font-serif font-bold text-gray-900 mb-6">Send a Message</h3>
                         
-                        <form class="space-y-6" onsubmit="event.preventDefault(); alert('Thank you! Since this is a static site, we cannot process emails directly. Please use the email address listed to the left.');">
+                        <?php if($success_msg): ?>
+                            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+                                <strong class="font-bold">Success!</strong>
+                                <span class="block sm:inline"><?php echo $success_msg; ?></span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if($error_msg): ?>
+                            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                                <strong class="font-bold">Error!</strong>
+                                <span class="block sm:inline"><?php echo $error_msg; ?></span>
+                            </div>
+                        <?php endif; ?>
+
+                        <form class="space-y-6" method="POST" action="contact.php">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label class="block text-sm font-bold text-gray-700 mb-2">First Name</label>
@@ -216,7 +239,7 @@
                                 <textarea name="message" rows="5" class="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-brand-gold focus:bg-white focus:ring-0 transition-all outline-none" placeholder="How can we help you?" required></textarea>
                             </div>
 
-                            <button type="submit" class="w-full md:w-auto px-8 py-4 bg-brand-gold hover:bg-brand-dark text-white font-bold rounded-lg transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                            <button type="submit" name="send_message" class="w-full md:w-auto px-8 py-4 bg-brand-gold hover:bg-brand-dark text-white font-bold rounded-lg transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                                 Send Message
                             </button>
                         </form>
@@ -258,11 +281,11 @@
                 <div>
                     <h4 class="text-base font-serif font-bold mb-4 text-gray-100">Quick Links</h4>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="index.html" class="text-gray-400 hover:text-brand-gold transition-colors">Home</a></li>
+                        <li><a href="index.php" class="text-gray-400 hover:text-brand-gold transition-colors">Home</a></li>
                         <li><a href="about.html" class="text-gray-400 hover:text-brand-gold transition-colors">About Us</a></li>
-                        <li><a href="ministries.html" class="text-gray-400 hover:text-brand-gold transition-colors">Ministries</a></li>
-                        <li><a href="leadership.html" class="text-gray-400 hover:text-brand-gold transition-colors">Leadership</a></li>
-                        <li><a href="contact.html" class="text-brand-gold font-bold transition-colors">Contact</a></li>
+                        <li><a href="ministries.php" class="text-gray-400 hover:text-brand-gold transition-colors">Ministries</a></li>
+                        <li><a href="leadership.php" class="text-gray-400 hover:text-brand-gold transition-colors">Leadership</a></li>
+                        <li><a href="contact.php" class="text-brand-gold font-bold transition-colors">Contact</a></li>
                     </ul>
                 </div>
 
@@ -302,72 +325,7 @@
     </footer>
 
     <script>
-        // Navbar scroll effect
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('bg-white/90', 'backdrop-blur-md', 'shadow-md', 'py-3');
-                navbar.classList.remove('py-6');
-                // Change text colors for light background
-                navbar.querySelectorAll('a').forEach(link => {
-                    if (!link.classList.contains('bg-brand-gold')) { // Don't change button text
-                        link.classList.remove('text-white/90');
-                        link.classList.add('text-gray-800');
-                    }
-                });
-                 // Handle Logo Text Color
-                const logoTextWhite = navbar.querySelector('.text-white');
-                if(logoTextWhite) logoTextWhite.classList.remove('text-white');
-                
-                const logoTextHidden = navbar.querySelector('.hidden.md\\:block');
-                if(logoTextHidden) logoTextHidden.classList.add('text-brand-dark');
-
-                // Mobile button color
-                 const mobileBtn = document.getElementById('mobile-menu-btn');
-                 if(mobileBtn) mobileBtn.classList.remove('text-white');
-                 if(mobileBtn) mobileBtn.classList.add('text-brand-dark');
-
-            } else {
-                navbar.classList.remove('bg-white/90', 'backdrop-blur-md', 'shadow-md', 'py-3');
-                navbar.classList.add('py-6');
-                // Revert text colors
-                navbar.querySelectorAll('a').forEach(link => {
-                    if (!link.classList.contains('bg-brand-gold')) {
-                        link.classList.add('text-white/90');
-                        link.classList.remove('text-gray-800');
-                    }
-                });
-                
-                const logoTextHidden = navbar.querySelector('.hidden.md\\:block');
-                if(logoTextHidden) {
-                    logoTextHidden.classList.add('text-white');
-                    logoTextHidden.classList.remove('text-brand-dark');
-                }
-
-                // Mobile button color
-                 const mobileBtn = document.getElementById('mobile-menu-btn');
-                 if(mobileBtn) mobileBtn.classList.add('text-white');
-                 if(mobileBtn) mobileBtn.classList.remove('text-brand-dark');
-            }
-        });
-
-        // Mobile Menu Toggle
-        const mobileBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        
-        if (mobileBtn && mobileMenu) {
-            mobileBtn.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-                const icon = mobileBtn.querySelector('ion-icon');
-                if (mobileMenu.classList.contains('hidden')) {
-                    icon.setAttribute('name', 'menu-outline');
-                } else {
-                    icon.setAttribute('name', 'close-outline');
-                }
-            });
-        }
-
-         // Use Intersection Observer for fade animations
+        // Use Intersection Observer for fade animations
         const observerOptions = {
             threshold: 0.1
         };
