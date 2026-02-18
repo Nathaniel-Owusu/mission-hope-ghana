@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_leader'])) {
     $category = $_POST['category']; // This is now the Position Name
     $email = $_POST['email'];
     $phone = $_POST['phone'];
-    
+
     // Image Upload
     $image = "";
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
@@ -58,145 +58,174 @@ if (isset($_GET['delete'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>Manage Leadership</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="admin.css">
+    <meta charset="UTF-8">
+    <title>Manage Leadership</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#1b4d3e',
+                            DEFAULT: '#2d6a52',
+                            light: '#4a8c5a',
+                            gold: '#d4a373',
+                            cream: '#fcfbf7'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Open Sans', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </head>
-<body>
 
-<div class="admin-wrapper">
-    <?php include 'sidebar.php'; ?>
+<body class="bg-gray-50 font-sans text-gray-800 antialiased selection:bg-brand-gold selection:text-white">
 
-    <div class="admin-main">
-        <div class="admin-topbar">
-            <h5>Manage Leadership</h5>
-        </div>
+    <div class="flex min-h-screen">
+        <?php include 'sidebar.php'; ?>
 
-        <div class="container-fluid mt-4">
-            
-            <div class="row mb-4">
-                <!-- Manage Positions Card -->
-                <div class="col-12">
-                    <div class="card p-3">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h6 class="m-0">Manage Positions</h6>
-                            <form method="POST" class="d-flex gap-2">
-                                <input type="text" name="position_name" class="form-control form-control-sm" placeholder="New Position Name" required>
-                                <button type="submit" name="add_position" class="btn btn-sm btn-success text-nowrap">+ Add Position</button>
-                            </form>
-                        </div>
-                        <div class="d-flex flex-wrap gap-2">
-                            <?php
-                            $pos_res = $conn->query("SELECT * FROM positions ORDER BY name ASC");
-                            while($pos = $pos_res->fetch_assoc()) {
-                                echo '<span class="badge bg-secondary p-2 d-flex align-items-center gap-2">
-                                        '.$pos['name'].'
-                                        <a href="leadership.php?delete_pos='.$pos['id'].'" class="text-white text-decoration-none" onclick="return confirm(\'Delete this position?\')">&times;</a>
-                                      </span>';
-                            }
-                            ?>
-                        </div>
-                    </div>
+        <div class="flex-1 ml-64 p-8">
+            <h5 class="text-2xl font-serif font-bold text-brand-dark mb-6">Manage Leadership</h5>
+
+            <!-- Manage Positions Card -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-8">
+                <div class="flex justify-between items-center mb-4 border-b pb-2">
+                    <h6 class="font-bold text-lg text-gray-800">Manage Positions</h6>
+                    <form method="POST" class="flex gap-2">
+                        <input type="text" name="position_name" class="px-3 py-1 text-sm rounded-lg border border-gray-300 focus:border-brand-gold outline-none" placeholder="New Position Name" required>
+                        <button type="submit" name="add_position" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-lg text-sm font-semibold transition-colors">+ Add Position</button>
+                    </form>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <?php
+                    $pos_res = $conn->query("SELECT * FROM positions ORDER BY name ASC");
+                    if ($pos_res->num_rows > 0) {
+                        while ($pos = $pos_res->fetch_assoc()) {
+                            echo '<span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium flex items-center gap-2 border border-gray-200">
+                                    ' . htmlspecialchars($pos['name']) . '
+                                    <a href="leadership.php?delete_pos=' . $pos['id'] . '" class="text-gray-400 hover:text-red-500 transition-colors bg-white rounded-full w-4 h-4 flex items-center justify-center text-xs leading-none shadow-sm" onclick="return confirm(\'Delete this position?\')">&times;</a>
+                                  </span>';
+                        }
+                    } else {
+                        echo '<span class="text-gray-400 text-sm italic">No positions added yet.</span>';
+                    }
+                    ?>
                 </div>
             </div>
 
-            <div class="row">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <!-- Add Leader Form -->
-                <div class="col-md-4">
-                    <div class="card p-3">
-                        <h6>Add New Leader</h6>
+                <div class="lg:col-span-1">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 sticky top-8">
+                        <h6 class="font-bold text-lg mb-4 text-gray-800 border-b pb-2">Add New Leader</h6>
                         <form method="POST" enctype="multipart/form-data">
-                            <div class="mb-3">
-                                <label>Name</label>
-                                <input type="text" name="name" class="form-control" required>
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                                <input type="text" name="name" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-brand-gold focus:ring-2 focus:ring-brand-gold/20 outline-none transition-all" required>
                             </div>
-                            <div class="mb-3">
-                                <label>Role Description</label>
-                                <input type="text" name="role" class="form-control" placeholder="e.g. Head Elder, Senior Pastor" required>
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Role Description</label>
+                                <input type="text" name="role" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-brand-gold focus:ring-2 focus:ring-brand-gold/20 outline-none transition-all" placeholder="e.g. Head Elder, Senior Pastor" required>
                             </div>
-                             <div class="mb-3">
-                                <label>Position (Category)</label>
-                                <select name="category" class="form-control" required>
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Position (Category)</label>
+                                <select name="category" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-brand-gold focus:ring-2 focus:ring-brand-gold/20 outline-none transition-all bg-white" required>
                                     <option value="">Select Position...</option>
                                     <?php
                                     // Reset pointer
-                                    $pos_res->data_seek(0);
-                                    while($pos = $pos_res->fetch_assoc()) {
-                                        // Use lowercase value for DB compatibility with existing checks if desired, 
-                                        // or just store the Name as is. Let's store the lowercase version as 'category' in DB to keep existing frontend logic working nicely if it relies on 'pastor', 'elder'.
-                                        // OR update the frontend to check specifically. 
-                                        // For simplicity, let's store the raw name but try to map to our known keys if they match.
-                                        
-                                        // Actually, let's just store the Name directly.
-                                        // Ideally we should update the public page to match 'Pastor' instead of 'pastor'.
-                                        // effectively normalizing the data.
-                                        
-                                        // But the user just asked to change category to position. 
-                                        // I will store the user-defined name as the value.
-                                        echo '<option value="'.htmlspecialchars($pos['name']).'">'.htmlspecialchars($pos['name']).'</option>';
+                                    if (isset($pos_res)) {
+                                        $pos_res->data_seek(0);
+                                        while ($pos = $pos_res->fetch_assoc()) {
+                                            echo '<option value="' . htmlspecialchars($pos['name']) . '">' . htmlspecialchars($pos['name']) . '</option>';
+                                        }
                                     }
                                     ?>
                                 </select>
                             </div>
-                            <div class="mb-3">
-                                <label>Email (Optional)</label>
-                                <input type="text" name="email" class="form-control">
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Email <span class="text-gray-400 font-normal">(Optional)</span></label>
+                                <input type="text" name="email" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-brand-gold focus:ring-2 focus:ring-brand-gold/20 outline-none transition-all">
                             </div>
-                             <div class="mb-3">
-                                <label>Phone (Optional)</label>
-                                <input type="text" name="phone" class="form-control">
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Phone <span class="text-gray-400 font-normal">(Optional)</span></label>
+                                <input type="text" name="phone" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-brand-gold focus:ring-2 focus:ring-brand-gold/20 outline-none transition-all">
                             </div>
-                             <div class="mb-3">
-                                <label>Image</label>
-                                <input type="file" name="image" class="form-control">
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Image</label>
+                                <input type="file" name="image" class="block w-full text-sm text-gray-500
+                                  file:mr-4 file:py-2 file:px-4
+                                  file:rounded-full file:border-0
+                                  file:text-sm file:font-semibold
+                                  file:bg-brand-light/10 file:text-brand-dark
+                                  hover:file:bg-brand-light/20
+                                " />
                             </div>
-                            <button type="submit" name="add_leader" class="btn btn-primary w-100">Add Leader</button>
+                            <button type="submit" name="add_leader" class="w-full bg-brand-DEFAULT hover:bg-brand-dark text-white font-bold py-2 px-4 rounded-lg shadow transition-colors">
+                                Add Leader
+                            </button>
                         </form>
                     </div>
                 </div>
 
                 <!-- List -->
-                <div class="col-md-8">
-                    <div class="card p-3">
-                        <h6>Current Leadership</h6>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Image</th>
-                                    <th>Name</th>
-                                    <th>Role</th>
-                                    <th>Position</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $result = $conn->query("SELECT * FROM leadership ORDER BY id DESC");
-                                while($row = $result->fetch_assoc()){
-                                    echo "<tr>";
-                                    echo "<td>";
-                                    if($row['image']) {
-                                        echo "<img src='../{$row['image']}' width='50' height='50' style='object-fit:cover; border-radius:50%;'>";
+                <div class="lg:col-span-2">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                        <h6 class="font-bold text-lg mb-4 text-gray-800 border-b pb-2">Current Leadership</h6>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="text-xs text-gray-500 uppercase tracking-wider border-b border-gray-100">
+                                        <th class="py-3 px-2 font-semibold">Image</th>
+                                        <th class="py-3 px-2 font-semibold">Name</th>
+                                        <th class="py-3 px-2 font-semibold">Role</th>
+                                        <th class="py-3 px-2 font-semibold">Position</th>
+                                        <th class="py-3 px-2 font-semibold text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-sm">
+                                    <?php
+                                    $result = $conn->query("SELECT * FROM leadership ORDER BY id DESC");
+                                    if ($result->num_rows > 0) {
+                                        while ($row = $result->fetch_assoc()) {
+                                            echo "<tr class='border-b last:border-0 hover:bg-gray-50 transition-colors'>";
+                                            echo "<td class='py-3 px-2'>";
+                                            if ($row['image']) {
+                                                echo "<img src='../{$row['image']}' class='w-10 h-10 object-cover rounded-full border border-gray-200 shadow-sm'>";
+                                            } else {
+                                                echo "<div class='w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-400'><ion-icon name='person-outline'></ion-icon></div>";
+                                            }
+                                            echo "</td>";
+                                            echo "<td class='py-3 px-2 font-medium text-gray-900'>" . htmlspecialchars($row['name']) . "</td>";
+                                            echo "<td class='py-3 px-2 text-gray-600'>" . htmlspecialchars($row['role']) . "</td>";
+                                            echo "<td class='py-3 px-2'><span class='bg-blue-50 text-blue-600 px-2 py-1 rounded text-xs font-semibold'>" . htmlspecialchars($row['category']) . "</span></td>";
+                                            echo "<td class='py-3 px-2 text-right'>
+                                                <a href='leadership.php?delete={$row['id']}' class='bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1 rounded-md text-xs font-semibold transition-colors' onclick='return confirm(\"Are you sure?\")'>Delete</a>
+                                            </td>";
+                                            echo "</tr>";
+                                        }
+                                    } else {
+                                        echo "<tr><td colspan='5' class='py-4 text-center text-gray-500 italic'>No leaders found.</td></tr>";
                                     }
-                                    echo "</td>";
-                                    echo "<td>{$row['name']}</td>";
-                                    echo "<td>{$row['role']}</td>";
-                                    echo "<td><span class='badge bg-info'>{$row['category']}</span></td>";
-                                    echo "<td>
-                                        <a href='leadership.php?delete={$row['id']}' class='btn btn-danger btn-sm' onclick='return confirm(\"Are you sure?\")'>Delete</a>
-                                    </td>";
-                                    echo "</tr>";
-                                }
-                                ?>
-                            </tbody>
-                        </table>
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </body>
+
 </html>

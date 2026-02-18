@@ -1,11 +1,12 @@
 <?php include 'admin/db.php'; ?>
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mission Hope SDA Church | Proclaiming Hope</title>
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -29,14 +30,15 @@
             }
         }
     </script>
-    
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="index.css">
-    
+
     <!-- Icons -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </head>
+
 <body class="bg-brand-cream text-gray-800 antialiased selection:bg-brand-gold selection:text-white">
 
     <!-- Navigation -->
@@ -89,15 +91,15 @@
 
         <div class="relative z-20 container mx-auto px-6 text-center text-white mt-12">
             <span class="inline-block py-1 px-3 border border-white/30 rounded-full bg-white/10 backdrop-blur-md text-xs font-medium tracking-widest uppercase mb-4 animate-fade-up">Welcome Home</span>
-            
+
             <h1 class="text-4xl md:text-6xl lg:text-7xl font-serif font-bold mb-4 leading-tight animate-fade-up delay-100 drop-shadow-2xl">
                 Faith. Hope. <br> <span class="text-brand-gold italic">Salvation.</span>
             </h1>
-            
+
             <p class="text-base md:text-lg text-gray-200 max-w-xl mx-auto mb-8 font-light leading-relaxed animate-fade-up delay-200">
                 A community dedicated to preparing people for the soon coming of our Lord and Savior, Jesus Christ. Join us in worship and fellowship.
             </p>
-            
+
             <div class="flex flex-col md:flex-row gap-4 justify-center items-center animate-fade-up delay-300">
                 <a href="about.html" class="px-6 py-3 bg-white text-brand-dark rounded-full font-bold shadow-xl hover:bg-gray-100 transition-all flex items-center gap-2 group text-sm md:text-base">
                     Plan a Visit
@@ -137,7 +139,7 @@
                 <!-- Card 2 -->
                 <div class="glass-card p-6 rounded-2xl bg-brand-dark text-center text-white transform md:-translate-y-4 shadow-2xl border-none relative overflow-hidden group">
                     <div class="absolute top-0 right-0 p-24 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-                    
+
                     <div class="relative z-10">
                         <div class="w-12 h-12 bg-white/10 text-brand-gold rounded-full flex items-center justify-center mx-auto mb-4 text-2xl group-hover:rotate-12 transition-transform duration-500">
                             <ion-icon name="heart-outline"></ion-icon>
@@ -174,7 +176,7 @@
                     <!-- Decor -->
                     <div class="absolute -top-10 -left-10 w-40 h-40 bg-brand-gold/20 rounded-full blur-3xl"></div>
                     <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-brand-dark/20 rounded-full blur-3xl"></div>
-                    
+
                     <div class="relative rounded-[2rem] overflow-hidden shadow-2xl transform rotate-2 hover:rotate-0 transition-all duration-700">
                         <img src="youth.jpeg" alt="Church Youth" class="w-full h-[400px] object-cover">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
@@ -197,7 +199,7 @@
                     <p class="text-gray-600 text-base leading-relaxed mb-8">
                         Whether you are looking for a spiritual home, answers to life's big questions, or simply a place where you belong, we welcome you with open arms.
                     </p>
-                    
+
                     <div class="flex gap-4">
                         <div class="flex -space-x-4">
                             <img class="w-12 h-12 rounded-full border-4 border-white object-cover" src="IMG_1022.jpg" alt="Member">
@@ -218,7 +220,7 @@
     <!-- Ministries Parallax -->
     <section id="ministries" class="py-16 bg-brand-dark relative isolate overflow-hidden">
         <img src="church 2.jpeg" alt="Background" class="absolute inset-0 -z-10 h-full w-full object-cover object-center opacity-20 blur-sm fixed-bg">
-        
+
         <div class="container mx-auto px-6 text-center text-white relative z-10">
             <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4">Our Ministries</h2>
             <p class="text-gray-300 max-w-xl mx-auto mb-12 text-base">
@@ -228,7 +230,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Ministry Card 1 -->
                 <div class="group relative rounded-xl overflow-hidden aspect-[3/4] cursor-pointer">
-                    <img src="IMG_1086.jpg" alt="Youth Ministry" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <img src="youth.jpeg" alt="Youth Ministry" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
                     <div class="absolute bottom-0 left-0 w-full p-6 text-left transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
                         <h3 class="text-2xl font-serif font-bold text-white mb-2">Youth Ministry</h3>
@@ -289,9 +291,9 @@
                 <?php
                 $sql = "SELECT * FROM announcements ORDER BY created_at DESC LIMIT 3";
                 $result = $conn->query($sql);
-                
+
                 if ($result->num_rows > 0) {
-                    while($row = $result->fetch_assoc()) {
+                    while ($row = $result->fetch_assoc()) {
                         $date_str = isset($row['created_at']) ? date('M d, Y', strtotime($row['created_at'])) : 'Recent';
                         $title = htmlspecialchars($row['title']);
                         $message = htmlspecialchars($row['message']);
@@ -305,11 +307,11 @@
                         <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 hover:-translate-y-1 transition-transform duration-300">
                              <div class="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">
                                 <ion-icon name="calendar-outline" class="text-brand-gold text-sm"></ion-icon>
-                                '.$date_str.'
+                                ' . $date_str . '
                             </div>
-                            <h3 class="text-xl font-serif font-bold text-brand-dark mb-3">'.$title.'</h3>
+                            <h3 class="text-xl font-serif font-bold text-brand-dark mb-3">' . $title . '</h3>
                             <p class="text-gray-600 mb-6 leading-relaxed">
-                                '.$messageStr.'
+                                ' . $messageStr . '
                             </p>
                             <!-- <a href="#" class="inline-flex items-center gap-2 text-brand-DEFAULT font-bold text-sm hover:text-brand-dark transition-colors group">
                                 Read Full Update 
@@ -342,36 +344,36 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <?php
                 $events_res = $conn->query("SELECT * FROM events ORDER BY date_str ASC LIMIT 3");
-                if($events_res->num_rows > 0) {
-                    while($event = $events_res->fetch_assoc()) {
+                if ($events_res->num_rows > 0) {
+                    while ($event = $events_res->fetch_assoc()) {
                         $img = $event['image'] ? $event['image'] : 'IMG_1022.jpg';
-                        
+
                         // Parse date for display if needed, but we essentially stored pre-formatted strings.
                         // Let's rely on stored columns: day_num (27), month_short (JAN)
                         $day = $event['day_num'] ? $event['day_num'] : '01';
                         $month = $event['month_short'] ? $event['month_short'] : 'JAN';
                 ?>
-                <!-- Dynamic Event Card -->
-                <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:-translate-y-2 transition-transform duration-300 flex flex-col h-full">
-                    <div class="relative h-48">
-                        <img src="<?php echo $img; ?>" alt="<?php echo $event['title']; ?>" class="w-full h-full object-cover">
-                         <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-brand-dark px-3 py-1 rounded-md text-center shadow-md border border-gray-200">
-                            <span class="text-xs font-bold uppercase block text-brand-gold tracking-wider"><?php echo $month; ?></span>
-                            <span class="text-xl font-bold font-serif"><?php echo $day; ?></span>
+                        <!-- Dynamic Event Card -->
+                        <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:-translate-y-2 transition-transform duration-300 flex flex-col h-full">
+                            <div class="relative h-48">
+                                <img src="<?php echo $img; ?>" alt="<?php echo $event['title']; ?>" class="w-full h-full object-cover">
+                                <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-brand-dark px-3 py-1 rounded-md text-center shadow-md border border-gray-200">
+                                    <span class="text-xs font-bold uppercase block text-brand-gold tracking-wider"><?php echo $month; ?></span>
+                                    <span class="text-xl font-bold font-serif"><?php echo $day; ?></span>
+                                </div>
+                            </div>
+                            <div class="p-6 flex flex-col flex-grow">
+                                <h3 class="text-xl font-serif font-bold mb-2 text-gray-900 line-clamp-2"><?php echo $event['title']; ?></h3>
+                                <div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+                                    <ion-icon name="time-outline" class="text-brand-gold"></ion-icon> <?php echo $event['time_str']; ?>
+                                </div>
+                                <p class="text-gray-600 text-sm mb-6 line-clamp-3 leading-relaxed flex-grow">
+                                    <?php echo $event['description']; ?>
+                                </p>
+                                <!-- <a href="#" class="inline-flex items-center gap-1 text-brand-dark font-bold text-xs uppercase tracking-widest hover:text-brand-gold transition-colors mt-auto">Details <ion-icon name="arrow-forward-outline"></ion-icon></a> -->
+                            </div>
                         </div>
-                    </div>
-                     <div class="p-6 flex flex-col flex-grow">
-                        <h3 class="text-xl font-serif font-bold mb-2 text-gray-900 line-clamp-2"><?php echo $event['title']; ?></h3>
-                         <div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
-                            <ion-icon name="time-outline" class="text-brand-gold"></ion-icon> <?php echo $event['time_str']; ?>
-                        </div>
-                        <p class="text-gray-600 text-sm mb-6 line-clamp-3 leading-relaxed flex-grow">
-                            <?php echo $event['description']; ?>
-                        </p>
-                        <!-- <a href="#" class="inline-flex items-center gap-1 text-brand-dark font-bold text-xs uppercase tracking-widest hover:text-brand-gold transition-colors mt-auto">Details <ion-icon name="arrow-forward-outline"></ion-icon></a> -->
-                    </div>
-                </div>
-                <?php 
+                <?php
                     }
                 } else {
                     // Fallback to static if no events found, or just show a message.
@@ -383,7 +385,7 @@
                 }
                 ?>
             </div>
-             <div class="mt-8 text-center md:hidden">
+            <div class="mt-8 text-center md:hidden">
                 <a href="#" class="inline-flex items-center gap-2 text-brand-dark font-bold hover:text-brand-gold transition-colors">
                     View Full Calendar <ion-icon name="arrow-forward-outline"></ion-icon>
                 </a>
@@ -396,7 +398,7 @@
         <div class="absolute -right-20 top-20 w-80 h-80 bg-brand-gold/10 rounded-full blur-3xl"></div>
         <div class="container mx-auto px-6">
             <div class="flex flex-col lg:flex-row items-center gap-12">
-                 <div class="lg:w-1/2 relative group cursor-pointer">
+                <div class="lg:w-1/2 relative group cursor-pointer">
                     <div class="absolute -inset-2 bg-brand-dark rounded-2xl rotate-2 opacity-20 group-hover:rotate-1 transition-all duration-300"></div>
                     <img src="IMG_1022.jpg" alt="Sermon Thumbnail" class="relative rounded-2xl shadow-xl w-full object-cover">
                     <div class="absolute inset-0 flex items-center justify-center">
@@ -466,12 +468,15 @@
                 <div>
                     <h4 class="text-lg font-serif font-bold mb-6 text-gray-100">Quick Links</h4>
                     <ul class="space-y-3">
+                        <li><a href="index.php" class="text-gray-400 hover:text-brand-gold transition-colors">Home</a></li>
                         <li><a href="about.html" class="text-gray-400 hover:text-brand-gold transition-colors">About Us</a></li>
                         <li><a href="ministries.php" class="text-gray-400 hover:text-brand-gold transition-colors">Ministries</a></li>
                         <li><a href="leadership.php" class="text-gray-400 hover:text-brand-gold transition-colors">Leadership</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-brand-gold transition-colors">Sermons</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-brand-gold transition-colors">Events</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-brand-gold transition-colors">Donate</a></li>
+                        <li><a href="gallery.html" class="text-gray-400 hover:text-brand-gold transition-colors">Gallery</a></li>
+                        <li><a href="sermons.html" class="text-gray-400 hover:text-brand-gold transition-colors">Sermons</a></li>
+                        <li><a href="events.html" class="text-gray-400 hover:text-brand-gold transition-colors">Events</a></li>
+                        <li><a href="giving.html" class="text-gray-400 hover:text-brand-gold transition-colors">Giving</a></li>
+                        <li><a href="contact.html" class="text-gray-400 hover:text-brand-gold transition-colors">Contact</a></li>
                     </ul>
                 </div>
 
@@ -525,7 +530,7 @@
                         link.classList.add('text-gray-800');
                     }
                 });
-                 // Handle Logo Text Color
+                // Handle Logo Text Color
                 navbar.querySelector('.text-white').classList.remove('text-white');
                 navbar.querySelector('.hidden.md\\:block').classList.add('text-brand-dark');
 
@@ -589,13 +594,13 @@
         // Mobile Menu Toggle
         const mobileBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
-        
+
         mobileBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
             const icon = mobileBtn.querySelector('ion-icon');
             if (mobileMenu.classList.contains('hidden')) {
                 icon.setAttribute('name', 'menu-outline');
-                navbar.classList.remove('bg-brand-dark'); 
+                navbar.classList.remove('bg-brand-dark');
             } else {
                 icon.setAttribute('name', 'close-outline');
                 navbar.classList.add('bg-brand-dark'); // Ensure background is dark when menu is open
@@ -603,4 +608,5 @@
         });
     </script>
 </body>
+
 </html>
