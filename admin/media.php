@@ -1,11 +1,12 @@
 <?php
-include 'auth_session.php';
 include 'db.php';
+// include 'auth_session.php'; 
 
 // Handle Upload
 if (isset($_POST['upload'])) {
     $title_base = $_POST['title'];
     $type = $_POST['type']; // 'image' or 'video'
+    $description = $_POST['description']; // Optional description
 
     // Increase limits for bulk upload
     ini_set('upload_max_filesize', '100M');
@@ -41,8 +42,8 @@ if (isset($_POST['upload'])) {
                     $db_path = "gallery_uploads/" . $unique_name;
                     $title = $countfiles > 1 ? "$title_base ($i)" : $title_base;
 
-                    $stmt = $conn->prepare("INSERT INTO media (title, type, file_path) VALUES (?, ?, ?)");
-                    $stmt->bind_param("sss", $title, $type, $db_path);
+                    $stmt = $conn->prepare("INSERT INTO media (title, type, file_path, description) VALUES (?, ?, ?, ?)");
+                    $stmt->bind_param("ssss", $title, $type, $db_path, $description);
                     $stmt->execute();
                     $success_count++;
                 } else {
@@ -61,7 +62,7 @@ if (isset($_POST['upload'])) {
         $error = "Failed to upload $error_count file(s). Check file types or sizes.";
     }
 }
-// Delete logic remains same...
+// Delete logic
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
     $res = $conn->query("SELECT file_path FROM media WHERE id=$id");
@@ -81,8 +82,10 @@ if (isset($_GET['delete'])) {
 
 <head>
     <meta charset="UTF-8">
-    <title>Manage Media Gallery</title>
+    <title>Media Gallery | Mission Hope Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -90,118 +93,220 @@ if (isset($_GET['delete'])) {
                 extend: {
                     colors: {
                         brand: {
-                            dark: '#1b4d3e',
-                            DEFAULT: '#2d6a52',
-                            light: '#4a8c5a',
-                            gold: '#d4a373',
-                            cream: '#fcfbf7'
+                            dark: '#052e16',
+                            /* Darker Green */
+                            main: '#1b4d3e',
+                            light: '#34d399',
+                            /* Brighter accent */
+                            accent: '#10b981',
+                            gold: '#fbbf24',
+                            surface: '#ffffff',
+                            bg: '#f8fafc'
                         }
                     },
                     fontFamily: {
-                        sans: ['Open Sans', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
                         serif: ['Playfair Display', 'serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0,0,0,0.05)',
+                        'glow': '0 0 15px rgba(16, 185, 129, 0.3)',
                     }
                 }
             }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .sidebar-link.active {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 100%);
+            border-left: 4px solid #fbbf24;
+            color: #fbbf24;
+        }
+
+        .sidebar-link:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Custom Scrollbar for sidebar */
+        .sidebar-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+    </style>
 </head>
 
-<body class="bg-gray-50 font-sans text-gray-800 antialiased selection:bg-brand-gold selection:text-white">
+<body class="text-slate-800">
 
-    <div class="flex min-h-screen">
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- Modern Dark Sidebar -->
         <?php include 'sidebar.php'; ?>
 
-        <div class="flex-1 ml-64 p-8">
-            <h5 class="text-2xl font-serif font-bold text-brand-dark mb-6">Media Gallery</h5>
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col h-full bg-[#f0f2f5] overflow-y-auto relative">
+            <div class="absolute top-0 left-0 w-full h-80 bg-[#022c22] z-0 rounded-b-[3rem]">
+                <div class="absolute inset-0 opacity-20" style="background-image: url('../church%202.jpeg'); background-size: cover; background-position: center;"></div>
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[#f0f2f5]/90"></div>
+            </div>
 
-            <?php if (isset($msg)) echo "<div class='bg-green-100 border border-green-200 text-green-800 px-4 py-3 rounded-lg mb-6 shadow-sm'>$msg</div>"; ?>
-            <?php if (isset($error)) echo "<div class='bg-red-100 border border-red-200 text-red-800 px-4 py-3 rounded-lg mb-6 shadow-sm'>$error</div>"; ?>
+            <div class="relative z-10 px-8 py-8 md:px-12">
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Upload Form -->
-                <div class="lg:col-span-1">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 sticky top-8">
-                        <h6 class="font-bold text-lg mb-4 text-gray-800 border-b pb-2">Bulk Upload Media</h6>
-                        <form method="POST" enctype="multipart/form-data">
-                            <div class="mb-4">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Batch Title / Caption</label>
-                                <input type="text" name="title" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-brand-gold focus:ring-2 focus:ring-brand-gold/20 outline-none transition-all" placeholder="e.g. Youth Camp 2024" required>
-                            </div>
-                            <div class="mb-4">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
-                                <select name="type" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-brand-gold focus:ring-2 focus:ring-brand-gold/20 outline-none transition-all bg-white">
-                                    <option value="image">Photos</option>
-                                    <option value="video">Videos</option>
-                                </select>
-                            </div>
-                            <div class="mb-6">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Select Files (Max 50)</label>
-                                <input type="file" name="file[]" class="block w-full text-sm text-gray-500
-                                  file:mr-4 file:py-2 file:px-4
-                                  file:rounded-full file:border-0
-                                  file:text-sm file:font-semibold
-                                  file:bg-brand-light/10 file:text-brand-dark
-                                  hover:file:bg-brand-light/20
-                                " multiple required />
-                                <p class="text-xs text-gray-400 mt-2">Hold <kbd class="font-mono bg-gray-100 px-1 rounded border">Ctrl</kbd> or <kbd class="font-mono bg-gray-100 px-1 rounded border">Cmd</kbd> to select multiple files.</p>
-                            </div>
-                            <button type="submit" name="upload" class="w-full bg-brand-DEFAULT hover:bg-brand-dark text-white font-bold py-2 px-4 rounded-lg shadow transition-colors">
-                                Upload All
-                            </button>
-                        </form>
+                <!-- Header -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+                    <div>
+                        <h2 class="text-3xl font-serif font-bold text-white mb-1">Media Library</h2>
+                        <p class="text-emerald-100 text-sm font-light tracking-wide">Upload and manage photos & videos.</p>
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                        <div class="glass-panel rounded-full px-4 py-2 flex items-center shadow-lg">
+                            <ion-icon name="search-outline" class="text-slate-500 mr-2"></ion-icon>
+                            <input type="text" id="searchInput" placeholder="Search media..." class="bg-transparent border-none outline-none text-sm w-48 text-slate-700 placeholder-slate-500">
+                        </div>
+                        <button class="bg-white p-2.5 rounded-full shadow-lg text-emerald-800 hover:scale-105 transition-transform relative">
+                            <ion-icon name="notifications" class="text-xl"></ion-icon>
+                            <span class="absolute top-0 right-0 h-3 w-3 bg-red-500 rounded-full border-2 border-white"></span>
+                        </button>
                     </div>
                 </div>
 
-                <!-- Gallery List -->
-                <div class="lg:col-span-2">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                        <h6 class="font-bold text-lg mb-4 text-gray-800 border-b pb-2">Gallery Items</h6>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
-                                <thead>
-                                    <tr class="text-xs text-gray-500 uppercase tracking-wider border-b border-gray-100">
-                                        <th class="py-3 px-2 font-semibold">Preview</th>
-                                        <th class="py-3 px-2 font-semibold">Title</th>
-                                        <th class="py-3 px-2 font-semibold">Type</th>
-                                        <th class="py-3 px-2 font-semibold text-right">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="text-sm">
-                                    <?php
-                                    $result = $conn->query("SELECT * FROM media ORDER BY id DESC");
-                                    if ($result->num_rows > 0) {
-                                        while ($row = $result->fetch_assoc()) {
-                                            echo "<tr class='border-b last:border-0 hover:bg-gray-50 transition-colors'>";
-                                            echo "<td class='py-3 px-2'>";
-                                            if ($row['type'] == 'image') {
-                                                echo "<img src='../{$row['file_path']}' class='w-20 h-16 object-cover rounded-md border border-gray-200 shadow-sm'>";
-                                            } else {
-                                                echo "<span class='bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs font-semibold border border-gray-200'>Video</span>";
-                                            }
-                                            echo "</td>";
-                                            echo "<td class='py-3 px-2 font-medium text-gray-900'>" . htmlspecialchars($row['title']) . "</td>";
-                                            echo "<td class='py-3 px-2 text-gray-500 capitalize'>" . htmlspecialchars($row['type']) . "</td>";
-                                            echo "<td class='py-3 px-2 text-right'>
-                                                <a href='media.php?delete={$row['id']}' class='bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1 rounded-md text-xs font-semibold transition-colors' onclick='return confirm(\"Delete this item?\")'>Delete</a>
-                                            </td>";
-                                            echo "</tr>";
-                                        }
-                                    } else {
-                                        echo "<tr><td colspan='4' class='py-4 text-center text-gray-500 italic'>No media uploaded yet.</td></tr>";
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Upload Form -->
+                    <div class="lg:col-span-1">
+                        <div class="bg-white p-6 rounded-2xl shadow-soft border border-slate-100 sticky top-8">
+                            <div class="flex items-center gap-3 mb-6">
+                                <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                                    <ion-icon name="cloud-upload-outline" class="text-xl"></ion-icon>
+                                </div>
+                                <h3 class="font-bold text-slate-800 text-lg">Upload Media</h3>
+                            </div>
+
+                            <form method="POST" enctype="multipart/form-data" class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">Collection Title</label>
+                                    <input type="text" name="title" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:border-brand-gold focus:bg-white outline-none transition-all text-sm font-medium" placeholder="e.g. Easter Service 2024" required>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">Description (Optional)</label>
+                                    <textarea name="description" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:border-brand-gold focus:bg-white outline-none transition-all text-sm font-medium resize-none h-20" placeholder="Brief caption..."></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">File Type</label>
+                                    <select name="type" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:border-brand-gold focus:bg-white outline-none transition-all text-sm font-medium">
+                                        <option value="image">Photos</option>
+                                        <option value="video">Videos</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">Select Files</label>
+                                    <div class="relative border-2 border-dashed border-slate-200 rounded-xl p-6 text-center hover:bg-slate-50 transition-colors cursor-pointer group">
+                                        <input type="file" name="file[]" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" multiple required />
+                                        <ion-icon name="images-outline" class="text-3xl text-slate-300 mb-2 group-hover:text-emerald-500 transition-colors"></ion-icon>
+                                        <p class="text-xs font-bold text-slate-500">Click to upload or drag & drop</p>
+                                        <p class="text-[10px] text-slate-400 mt-1">Images, MP4, WebM (Max 50 files)</p>
+                                    </div>
+                                </div>
+                                <button type="submit" name="upload" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-emerald-600/30 transition-all hover:-translate-y-1 mt-2 flex items-center justify-center gap-2">
+                                    <ion-icon name="cloud-upload" class="text-lg"></ion-icon>
+                                    Start Upload
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Gallery Grid -->
+                    <div class="lg:col-span-2">
+                        <div class="bg-white p-6 rounded-2xl shadow-soft border border-slate-100">
+                            <div class="flex justify-between items-center mb-6 pl-2">
+                                <h3 class="font-bold text-slate-800 text-lg">Gallery Items</h3>
+                            </div>
+
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-4" id="mediaGrid">
+                                <?php
+                                $result = $conn->query("SELECT * FROM media ORDER BY id DESC");
+                                if ($result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
+                                ?>
+                                        <div class="media-item group relative aspect-square rounded-xl overflow-hidden bg-slate-100 border border-slate-200 shadow-sm hover:shadow-md transition-all">
+                                            <?php if ($row['type'] == 'image'): ?>
+                                                <img src="../<?php echo htmlspecialchars($row['file_path']); ?>" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                            <?php else: ?>
+                                                <div class="w-full h-full flex items-center justify-center bg-slate-800 text-white">
+                                                    <ion-icon name="play-circle" class="text-4xl"></ion-icon>
+                                                </div>
+                                            <?php endif; ?>
+
+                                            <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                                                <p class="text-white text-xs font-bold truncate item-title"><?php echo htmlspecialchars($row['title']); ?></p>
+                                                <div class="flex justify-between items-center mt-2">
+                                                    <span class="text-[10px] text-slate-300 uppercase tracking-widest"><?php echo htmlspecialchars($row['type']); ?></span>
+                                                    <a href="media.php?delete=<?php echo $row['id']; ?>" class="text-red-400 hover:text-red-200" onclick="return confirm('Delete this item?')">
+                                                        <ion-icon name="trash"></ion-icon>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                <?php
                                     }
-                                    ?>
-                                </tbody>
-                            </table>
+                                } else {
+                                    echo '<div class="col-span-3 py-12 text-center text-slate-400 italic bg-slate-50 rounded-xl border border-dashed border-slate-200">No media found. Upload something to get started.</div>';
+                                }
+                                ?>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
+    <script>
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            let filter = this.value.toLowerCase();
+            let items = document.querySelectorAll('#mediaGrid .media-item');
+
+            items.forEach(function(item) {
+                let title = item.querySelector('.item-title').innerText.toLowerCase();
+                if (title.includes(filter)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

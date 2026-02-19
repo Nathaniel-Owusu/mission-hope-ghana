@@ -19,6 +19,24 @@ CREATE TABLE IF NOT EXISTS `announcements` (
   `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
   `message` text NOT NULL,
+  `is_urgent` tinyint(1) DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `attendance_records`
+--
+
+CREATE TABLE IF NOT EXISTS `attendance_records` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `date` date NOT NULL,
+  `service_type` varchar(50) NOT NULL,
+  `attendees_count` int(11) NOT NULL,
+  `member_ids` text DEFAULT NULL,
+  `visitors_count` int(11) DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -76,6 +94,21 @@ CREATE TABLE IF NOT EXISTS `media` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `members`
+--
+
+CREATE TABLE IF NOT EXISTS `members` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `phone` varchar(50) NOT NULL,
+  `group_name` varchar(100) DEFAULT 'General',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `messages`
 --
 
@@ -104,6 +137,21 @@ CREATE TABLE IF NOT EXISTS `ministries` (
   `leader_name` varchar(255) DEFAULT NULL,
   `leader_role` varchar(255) DEFAULT NULL,
   `leader_image` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sms_history`
+--
+
+CREATE TABLE IF NOT EXISTS `sms_history` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `message` text NOT NULL,
+  `recipients` varchar(255) NOT NULL,
+  `status` varchar(50) DEFAULT 'Sent',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

@@ -1,0 +1,34 @@
+Hosting Instructions for Hostinger
+
+1. Export Database:
+   - Your local database structure and data are ready in `database.sql`.
+   - Log in to your Hostinger control panel.
+   - Go to "Databases" -> "Create New MySQL Database".
+   - Note down the Database Name, Username, and Password you create.
+   - Open phpMyAdmin for your new database.
+   - Click "Import" and upload the `database.sql` file from your project folder.
+
+2. Configure Database Connection:
+   - Open `admin/db.php` on your computer.
+   - Update the `$server`, `$username`, `$password`, and `$dbname` variables with your Hostinger database details.
+   - The `$server` is usually "localhost" on Hostinger too, but check their dashboard.
+
+3. Enable Security:
+   - Open all PHP files in the `admin/` folder (like `dashboard.php`, `sms.php`, etc.).
+   - Uncomment `// include 'auth_session.php';` at the top of each file.
+   - This ensures only logged-in admins can access these pages.
+
+4. Upload Files:
+   - Use FileZilla or Hostinger's File Manager.
+   - Upload all files from `mission hope/` to the `public_html/` folder on your hosting server.
+   - Do NOT upload the `.git/` folder if visible.
+
+5. Test:
+   - Visit your website URL.
+   - Act as a visitor and check if pages load.
+   - Go to `/admin/login.php` and try logging in.
+   - Test sending an SMS and adding a contact to verify database write permissions.
+
+6. Troubleshooting:
+   - If you see "Database Connection Failed", double-check your `admin/db.php` credentials.
+   - If images are missing, check if file names are case-sensitive (e.g., `Image.jpg` vs `image.jpg`). Linux servers care about capitalization!

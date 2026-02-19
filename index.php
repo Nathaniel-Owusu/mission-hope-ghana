@@ -44,21 +44,24 @@
     <!-- Navigation -->
     <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-4">
         <div class="container mx-auto px-6 flex justify-between items-center">
-            <a href="#" class="flex items-center gap-2 group">
-                <img src="sdalogo.png" alt="Mission Hope Logo" class="h-12 w-auto drop-shadow-lg transition-transform group-hover:rotate-6">
-                <div class="hidden md:block text-white drop-shadow-md">
-                    <span class="block text-xl font-serif font-bold leading-none tracking-wide">MISSION HOPE</span>
-                    <span class="block text-[10px] uppercase tracking-[0.2em] opacity-90">Seventh-Day Adventist Church</span>
+            <a href="index.php" class="flex items-center gap-2 group">
+                <img src="currentlogo.png" alt="Mission Hope Logo" class="h-12 w-auto drop-shadow-lg transition-transform group-hover:rotate-6">
+                <div class="text-white drop-shadow-md">
+                    <span class="block text-base md:text-xl font-serif font-bold leading-none tracking-wide">MISSION HOPE</span>
+                    <span class="block text-[7px] md:text-[10px] uppercase tracking-[0.2em] opacity-90">Seventh-Day Adventist Church</span>
                 </div>
             </a>
 
             <!-- Desktop Menu -->
             <div class="hidden md:flex items-center space-x-8">
-                <a href="index.php" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Home</a>
+                <a href="index.php" class="text-brand-gold font-bold transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-full after:h-0.5 after:bg-brand-gold after:transition-all">Home</a>
                 <a href="about.html" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">About</a>
                 <a href="ministries.php" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Ministries</a>
+                <a href="sermons.php" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Sermons</a>
+                <a href="events.php" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Events</a>
                 <a href="leadership.php" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Leadership</a>
                 <a href="gallery.php" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Gallery</a>
+                <a href="giving.html" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Giving</a>
                 <a href="contact.php" class="px-6 py-2 bg-brand-gold/90 hover:bg-brand-gold text-white rounded-full font-semibold transition-all shadow-lg hover:shadow-brand-gold/50 transform hover:-translate-y-0.5 backdrop-blur-sm">Contact Us</a>
             </div>
 
@@ -70,13 +73,16 @@
 
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-brand-dark/95 backdrop-blur-md shadow-xl border-t border-white/10 transition-all duration-300 origin-top transform">
-            <div class="flex flex-col p-6 space-y-6 text-center">
-                <a href="index.php" class="text-white hover:text-brand-gold font-serif font-medium text-lg tracking-widest transition-colors">Home</a>
-                <a href="about.html" class="text-white hover:text-brand-gold font-serif font-medium text-lg tracking-widest transition-colors">About</a>
-                <a href="ministries.php" class="text-white hover:text-brand-gold font-serif font-medium text-lg tracking-widest transition-colors">Ministries</a>
-                <a href="leadership.php" class="text-white hover:text-brand-gold font-serif font-medium text-lg tracking-widest transition-colors">Leadership</a>
-                <a href="gallery.php" class="text-white hover:text-brand-gold font-serif font-medium text-lg tracking-widest transition-colors">Gallery</a>
-                <a href="contact.php" class="inline-block px-8 py-3 bg-brand-gold text-white rounded-full font-bold shadow-lg hover:bg-white hover:text-brand-gold transition-all mx-auto">Contact Us</a>
+            <div class="flex flex-col p-6 space-y-4 text-center">
+                <a href="index.php" class="text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">Home</a>
+                <a href="about.html" class="text-white hover:text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">About</a>
+                <a href="ministries.php" class="text-white hover:text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">Ministries</a>
+                <a href="sermons.php" class="text-white hover:text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">Sermons</a>
+                <a href="events.php" class="text-white hover:text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">Events</a>
+                <a href="leadership.php" class="text-white hover:text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">Leadership</a>
+                <a href="gallery.php" class="text-white hover:text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">Gallery</a>
+                <a href="giving.html" class="text-white hover:text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">Giving</a>
+                <a href="contact.php" class="inline-block px-8 py-3 bg-brand-gold text-white rounded-full font-bold shadow-lg hover:bg-white hover:text-brand-gold transition-all mx-auto text-sm">Contact Us</a>
             </div>
         </div>
     </nav>
@@ -343,7 +349,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <?php
-                $events_res = $conn->query("SELECT * FROM events ORDER BY date_str ASC LIMIT 3");
+                $events_res = $conn->query("SELECT * FROM events ORDER BY STR_TO_DATE(date_str, '%M %e, %Y') DESC LIMIT 3");
                 if ($events_res->num_rows > 0) {
                     while ($event = $events_res->fetch_assoc()) {
                         $img = $event['image'] ? $event['image'] : 'IMG_1022.jpg';
@@ -445,7 +451,7 @@
                 <!-- Branding -->
                 <div>
                     <div class="flex items-center gap-2 mb-6">
-                        <img src="sdalogo.png" alt="Logo" class="h-10 w-auto opacity-90">
+                        <img src="currentlogo.png" alt="Logo" class="h-10 w-auto opacity-90">
                         <span class="text-xl font-serif font-bold">Mission Hope</span>
                     </div>
                     <p class="text-gray-400 leading-relaxed mb-6">
@@ -472,11 +478,11 @@
                         <li><a href="about.html" class="text-gray-400 hover:text-brand-gold transition-colors">About Us</a></li>
                         <li><a href="ministries.php" class="text-gray-400 hover:text-brand-gold transition-colors">Ministries</a></li>
                         <li><a href="leadership.php" class="text-gray-400 hover:text-brand-gold transition-colors">Leadership</a></li>
-                        <li><a href="gallery.html" class="text-gray-400 hover:text-brand-gold transition-colors">Gallery</a></li>
-                        <li><a href="sermons.html" class="text-gray-400 hover:text-brand-gold transition-colors">Sermons</a></li>
-                        <li><a href="events.html" class="text-gray-400 hover:text-brand-gold transition-colors">Events</a></li>
+                        <li><a href="gallery.php" class="text-gray-400 hover:text-brand-gold transition-colors">Gallery</a></li>
+                        <li><a href="sermons.php" class="text-gray-400 hover:text-brand-gold transition-colors">Sermons</a></li>
+                        <li><a href="events.php" class="text-gray-400 hover:text-brand-gold transition-colors">Events</a></li>
                         <li><a href="giving.html" class="text-gray-400 hover:text-brand-gold transition-colors">Giving</a></li>
-                        <li><a href="contact.html" class="text-gray-400 hover:text-brand-gold transition-colors">Contact</a></li>
+                        <li><a href="contact.php" class="text-gray-400 hover:text-brand-gold transition-colors">Contact</a></li>
                     </ul>
                 </div>
 
@@ -531,8 +537,21 @@
                     }
                 });
                 // Handle Logo Text Color
-                navbar.querySelector('.text-white').classList.remove('text-white');
-                navbar.querySelector('.hidden.md\\:block').classList.add('text-brand-dark');
+                const logoText = navbar.querySelector('.drop-shadow-md');
+                if (logoText) {
+                    logoText.classList.remove('text-white');
+                    logoText.classList.add('text-brand-dark');
+                }
+
+                // Mobile button color
+                const mobileBtn = document.getElementById('mobile-menu-btn');
+                if (mobileBtn) {
+                    mobileBtn.classList.remove('text-white');
+                    mobileBtn.classList.add('text-brand-dark');
+                }
+
+                // Show logo image color version if needed, or keep as is.
+                // Assuming logo image is suitable for both backgrounds or managed via CSS/Image swap if needed.
 
             } else {
                 navbar.classList.remove('bg-white/90', 'backdrop-blur-md', 'shadow-md', 'py-3');
@@ -544,8 +563,19 @@
                         link.classList.remove('text-gray-800');
                     }
                 });
-                navbar.querySelector('.text-brand-dark').classList.add('text-white');
-                navbar.querySelector('.hidden.md\\:block').classList.remove('text-brand-dark');
+
+                const logoText = navbar.querySelector('.drop-shadow-md');
+                if (logoText) {
+                    logoText.classList.add('text-white');
+                    logoText.classList.remove('text-brand-dark');
+                }
+
+                // Mobile button color
+                const mobileBtn = document.getElementById('mobile-menu-btn');
+                if (mobileBtn) {
+                    mobileBtn.classList.add('text-white');
+                    mobileBtn.classList.remove('text-brand-dark');
+                }
             }
         });
 

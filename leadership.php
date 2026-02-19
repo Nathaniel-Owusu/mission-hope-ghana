@@ -3,11 +3,12 @@ include 'admin/db.php';
 ?>
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leadership | Mission Hope SDA Church</title>
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -31,15 +32,15 @@ include 'admin/db.php';
             }
         }
     </script>
-    
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="index.css">
-    
+
     <!-- Icons -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
-     <style>
+    <style>
         .parallax-section {
             background-attachment: fixed;
             background-position: center;
@@ -48,16 +49,17 @@ include 'admin/db.php';
         }
     </style>
 </head>
+
 <body class="bg-brand-cream text-gray-800 antialiased selection:bg-brand-gold selection:text-white">
 
     <!-- Navigation -->
     <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-4 bg-white/90 backdrop-blur-md shadow-md">
         <div class="container mx-auto px-6 flex justify-between items-center">
             <a href="index.php" class="flex items-center gap-2 group">
-                <img src="sdalogo.png" alt="Mission Hope Logo" class="h-10 w-auto drop-shadow-lg transition-transform group-hover:rotate-6">
-                <div class="hidden md:block text-brand-dark drop-shadow-md">
-                    <span class="block text-xl font-serif font-bold leading-none tracking-wide">MISSION HOPE</span>
-                    <span class="block text-[10px] uppercase tracking-[0.2em] opacity-90">Seventh-Day Adventist Church</span>
+                <img src="currentlogo.png" alt="Mission Hope Logo" class="h-10 w-auto drop-shadow-lg transition-transform group-hover:rotate-6">
+                <div class="text-brand-dark drop-shadow-md">
+                    <span class="block text-base md:text-xl font-serif font-bold leading-none tracking-wide">MISSION HOPE</span>
+                    <span class="block text-[7px] md:text-[10px] uppercase tracking-[0.2em] opacity-90">Seventh-Day Adventist Church</span>
                 </div>
             </a>
 
@@ -66,15 +68,33 @@ include 'admin/db.php';
                 <a href="index.php" class="text-gray-800 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Home</a>
                 <a href="about.html" class="text-gray-800 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">About</a>
                 <a href="ministries.php" class="text-gray-800 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Ministries</a>
+                <a href="sermons.php" class="text-gray-800 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Sermons</a>
+                <a href="events.php" class="text-gray-800 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Events</a>
                 <a href="leadership.php" class="text-brand-gold font-bold transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-full after:h-0.5 after:bg-brand-gold after:transition-all">Leadership</a>
                 <a href="gallery.php" class="text-gray-800 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Gallery</a>
+                <a href="giving.html" class="text-gray-800 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Giving</a>
                 <a href="contact.php" class="px-6 py-2 bg-brand-gold/90 hover:bg-brand-gold text-white rounded-full font-semibold transition-all shadow-lg hover:shadow-brand-gold/50 transform hover:-translate-y-0.5 backdrop-blur-sm shadow-brand-gold/50">Contact Us</a>
             </div>
 
             <!-- Mobile Button -->
-            <button class="md:hidden text-brand-dark text-3xl focus:outline-none">
+            <button id="mobile-menu-btn" class="md:hidden text-brand-dark text-3xl focus:outline-none">
                 <ion-icon name="menu-outline"></ion-icon>
             </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-brand-dark/95 backdrop-blur-md shadow-xl border-t border-white/10 transition-all duration-300 origin-top transform">
+            <div class="flex flex-col p-6 space-y-4 text-center">
+                <a href="index.php" class="text-white hover:text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">Home</a>
+                <a href="about.html" class="text-white hover:text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">About</a>
+                <a href="ministries.php" class="text-white hover:text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">Ministries</a>
+                <a href="sermons.php" class="text-white hover:text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">Sermons</a>
+                <a href="events.php" class="text-white hover:text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">Events</a>
+                <a href="leadership.php" class="text-white hover:text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">Leadership</a>
+                <a href="gallery.php" class="text-white hover:text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">Gallery</a>
+                <a href="giving.html" class="text-white hover:text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">Giving</a>
+                <a href="contact.php" class="inline-block px-8 py-3 bg-brand-gold text-white rounded-full font-bold shadow-lg hover:bg-white hover:text-brand-gold transition-all mx-auto text-sm">Contact Us</a>
+            </div>
         </div>
     </nav>
 
@@ -82,7 +102,7 @@ include 'admin/db.php';
     <header class="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden parallax-section" style="background-image: url('IMG_1138.JPG');">
         <div class="absolute inset-0 bg-brand-dark/80 z-10"></div>
         <div class="relative z-20 container mx-auto px-6 text-center text-white mt-12">
-             <span class="inline-block py-1 px-4 border border-white/30 rounded-full bg-white/10 backdrop-blur-md text-xs font-bold tracking-[0.2em] uppercase mb-4 animate-fade-up">Servant Leaders</span>
+            <span class="inline-block py-1 px-4 border border-white/30 rounded-full bg-white/10 backdrop-blur-md text-xs font-bold tracking-[0.2em] uppercase mb-4 animate-fade-up">Servant Leaders</span>
             <h1 class="text-4xl md:text-6xl font-serif font-bold mb-4 animate-fade-up delay-100">Our Leadership</h1>
             <p class="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto font-light leading-relaxed animate-fade-up delay-200">
                 Dedicated men and women called to serve, guide, and shepherd the flock of God.
@@ -94,48 +114,48 @@ include 'admin/db.php';
     <section class="py-20 bg-white">
         <div class="container mx-auto px-6">
             <div class="text-center mb-16">
-                 <span class="text-brand-gold font-bold tracking-widest uppercase text-xs">Shepherds of the Flock</span>
+                <span class="text-brand-gold font-bold tracking-widest uppercase text-xs">Shepherds of the Flock</span>
                 <h2 class="text-3xl md:text-4xl font-serif font-bold text-gray-900 mt-2">Our Pastors</h2>
             </div>
-            
-             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 justify-center">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 justify-center">
                 <?php
                 // Fetch all pastors (using LIKE to catch 'Church Pastor', 'District Pastor', 'Pastor')
                 $pastors = $conn->query("SELECT * FROM leadership WHERE category LIKE '%Pastor%' OR role LIKE '%Pastor%' ORDER BY id ASC");
-                if($pastors->num_rows > 0) {
-                    while($pastor = $pastors->fetch_assoc()) {
+                if ($pastors->num_rows > 0) {
+                    while ($pastor = $pastors->fetch_assoc()) {
                         $img = $pastor['image'] ? $pastor['image'] : 'odame.jpg';
                 ?>
-                <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 flex flex-col items-center text-center">
-                    <div class="w-full h-80 relative bg-gray-100">
-                        <img src="<?php echo $img; ?>" alt="<?php echo $pastor['name']; ?>" class="w-full h-full object-cover object-top">
-                    </div>
-                    <div class="p-8 md:p-10 w-full">
-                        <h3 class="text-2xl font-serif font-bold text-gray-900 mb-2"><?php echo $pastor['name']; ?></h3>
-                        <p class="text-brand-gold uppercase tracking-widest text-xs font-bold mb-6"><?php echo $pastor['category']; ?></p> <!-- Show Position not Role here if Role is description -->
-                        <p class="text-gray-600 leading-relaxed mb-6">
-                           <?php echo $pastor['role']; ?> <!-- Using 'role' field as short bio/description or title -->
-                        </p>
-                         <div class="flex justify-center gap-4">
-                            <?php if($pastor['email']): ?>
-                            <a href="mailto:<?php echo $pastor['email']; ?>" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-brand-gold hover:text-white transition-all">
-                                <ion-icon name="mail-outline"></ion-icon>
-                            </a>
-                            <?php endif; ?>
-                             <?php if($pastor['phone']): ?>
-                             <a href="tel:<?php echo $pastor['phone']; ?>" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-brand-gold hover:text-white transition-all">
-                                <ion-icon name="call-outline"></ion-icon>
-                            </a>
-                             <?php endif; ?>
+                        <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 flex flex-col items-center text-center">
+                            <div class="w-full h-80 relative bg-gray-100">
+                                <img src="<?php echo $img; ?>" alt="<?php echo $pastor['name']; ?>" class="w-full h-full object-cover object-top">
+                            </div>
+                            <div class="p-8 md:p-10 w-full">
+                                <h3 class="text-2xl font-serif font-bold text-gray-900 mb-2"><?php echo $pastor['name']; ?></h3>
+                                <p class="text-brand-gold uppercase tracking-widest text-xs font-bold mb-6"><?php echo $pastor['category']; ?></p> <!-- Show Position not Role here if Role is description -->
+                                <p class="text-gray-600 leading-relaxed mb-6">
+                                    <?php echo $pastor['role']; ?> <!-- Using 'role' field as short bio/description or title -->
+                                </p>
+                                <div class="flex justify-center gap-4">
+                                    <?php if ($pastor['email']): ?>
+                                        <a href="mailto:<?php echo $pastor['email']; ?>" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-brand-gold hover:text-white transition-all">
+                                            <ion-icon name="mail-outline"></ion-icon>
+                                        </a>
+                                    <?php endif; ?>
+                                    <?php if ($pastor['phone']): ?>
+                                        <a href="tel:<?php echo $pastor['phone']; ?>" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-brand-gold hover:text-white transition-all">
+                                            <ion-icon name="call-outline"></ion-icon>
+                                        </a>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <?php 
+                <?php
                     }
                 } else {
                     // Fallback if no pastors found
                     echo '<p class="col-span-full text-center">No pastors listed.</p>';
-                } 
+                }
                 ?>
             </div>
         </div>
@@ -174,8 +194,8 @@ include 'admin/db.php';
     <!-- Unified Leadership Team -->
     <section class="py-20 bg-brand-cream">
         <div class="container mx-auto px-6">
-             <div class="text-center mb-16">
-                 <span class="text-brand-gold font-bold tracking-widest uppercase text-xs">Serving Together</span>
+            <div class="text-center mb-16">
+                <span class="text-brand-gold font-bold tracking-widest uppercase text-xs">Serving Together</span>
                 <h2 class="text-3xl md:text-4xl font-serif font-bold text-gray-900 mt-2">Church Leadership</h2>
             </div>
 
@@ -183,23 +203,23 @@ include 'admin/db.php';
                 <?php
                 // Fetch everyone ELSE (Not pastors)
                 $leaders = $conn->query("SELECT * FROM leadership WHERE category NOT LIKE '%Pastor%' AND role NOT LIKE '%Pastor%' ORDER BY category ASC, name ASC");
-                
-                if($leaders->num_rows > 0) {
-                    while($leader = $leaders->fetch_assoc()){
-                        $img = $leader['image'] ? $leader['image'] : 'https://ui-avatars.com/api/?name='.urlencode($leader['name']).'&background=fcfbf7&color=d4a373';
+
+                if ($leaders->num_rows > 0) {
+                    while ($leader = $leaders->fetch_assoc()) {
+                        $img = $leader['image'] ? $leader['image'] : 'https://ui-avatars.com/api/?name=' . urlencode($leader['name']) . '&background=fcfbf7&color=d4a373';
                 ?>
-                <div class="bg-white p-6 rounded-xl shadow-sm text-center group hover:-translate-y-2 transition-transform duration-300 border border-transparent hover:border-brand-gold/20">
-                    <div class="w-32 h-32 mx-auto rounded-full overflow-hidden mb-4 border-4 border-brand-cream group-hover:border-brand-gold transition-colors shadow-inner">
-                        <img src="<?php echo $img; ?>" alt="<?php echo $leader['name']; ?>" class="w-full h-full object-cover">
-                    </div>
-                    <h4 class="font-bold text-lg text-gray-900 mb-1 leading-tight"><?php echo $leader['name']; ?></h4>
-                    <p class="text-xs text-brand-gold uppercase tracking-widest font-bold mb-2"><?php echo $leader['category']; ?></p>
-                    <p class="text-sm text-gray-500 italic"><?php echo $leader['role']; ?></p>
-                </div>
-                <?php 
+                        <div class="bg-white p-6 rounded-xl shadow-sm text-center group hover:-translate-y-2 transition-transform duration-300 border border-transparent hover:border-brand-gold/20">
+                            <div class="w-32 h-32 mx-auto rounded-full overflow-hidden mb-4 border-4 border-brand-cream group-hover:border-brand-gold transition-colors shadow-inner">
+                                <img src="<?php echo $img; ?>" alt="<?php echo $leader['name']; ?>" class="w-full h-full object-cover">
+                            </div>
+                            <h4 class="font-bold text-lg text-gray-900 mb-1 leading-tight"><?php echo $leader['name']; ?></h4>
+                            <p class="text-xs text-brand-gold uppercase tracking-widest font-bold mb-2"><?php echo $leader['category']; ?></p>
+                            <p class="text-sm text-gray-500 italic"><?php echo $leader['role']; ?></p>
+                        </div>
+                <?php
                     }
                 } else {
-                     echo "<p class='col-span-full text-center text-gray-500 italic'>No other leaders listed yet.</p>";
+                    echo "<p class='col-span-full text-center text-gray-500 italic'>No other leaders listed yet.</p>";
                 }
                 ?>
             </div>
@@ -211,10 +231,10 @@ include 'admin/db.php';
     <!-- Join the Team Call to Action -->
     <section class="py-20 relative overflow-hidden">
         <div class="absolute inset-0 bg-brand-dark">
-             <img src="IMG_1022.jpg" class="w-full h-full object-cover opacity-20" alt="Background">
-             <div class="absolute inset-0 bg-gradient-to-r from-brand-dark/90 to-brand-dark/70"></div>
+            <img src="IMG_1022.jpg" class="w-full h-full object-cover opacity-20" alt="Background">
+            <div class="absolute inset-0 bg-gradient-to-r from-brand-dark/90 to-brand-dark/70"></div>
         </div>
-        
+
         <div class="container mx-auto px-6 relative z-10 text-center">
             <h2 class="text-3xl md:text-5xl font-serif font-bold text-white mb-6">God Has Given Everyone a Gift</h2>
             <p class="text-gray-300 max-w-2xl mx-auto mb-10 text-lg">
@@ -233,13 +253,13 @@ include 'admin/db.php';
                 <!-- Branding -->
                 <div>
                     <div class="flex items-center gap-2 mb-6">
-                        <img src="sdalogo.png" alt="Logo" class="h-10 w-auto opacity-90">
+                        <img src="currentlogo.png" alt="Logo" class="h-10 w-auto opacity-90">
                         <span class="text-xl font-serif font-bold">Mission Hope</span>
                     </div>
                     <p class="text-gray-400 leading-relaxed mb-6 text-sm">
                         Proclaiming the everlasting gospel in the context of the Three Angels' messages of Revelation 14:6-12.
                     </p>
-                     <div class="flex gap-4">
+                    <div class="flex gap-4">
                         <a href="#" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-gold hover:text-white transition-all">
                             <ion-icon name="logo-facebook"></ion-icon>
                         </a>
@@ -256,7 +276,11 @@ include 'admin/db.php';
                         <li><a href="index.php" class="text-gray-400 hover:text-brand-gold transition-colors">Home</a></li>
                         <li><a href="about.html" class="text-gray-400 hover:text-brand-gold transition-colors">About Us</a></li>
                         <li><a href="ministries.php" class="text-gray-400 hover:text-brand-gold transition-colors">Ministries</a></li>
-                         <li><a href="leadership.php" class="text-gray-400 hover:text-brand-gold transition-colors">Leadership</a></li>
+                        <li><a href="leadership.php" class="text-brand-gold font-bold transition-colors">Leadership</a></li>
+                        <li><a href="gallery.php" class="text-gray-400 hover:text-brand-gold transition-colors">Gallery</a></li>
+                        <li><a href="sermons.php" class="text-gray-400 hover:text-brand-gold transition-colors">Sermons</a></li>
+                        <li><a href="events.php" class="text-gray-400 hover:text-brand-gold transition-colors">Events</a></li>
+                        <li><a href="giving.html" class="text-gray-400 hover:text-brand-gold transition-colors">Giving</a></li>
                         <li><a href="contact.php" class="text-gray-400 hover:text-brand-gold transition-colors">Contact</a></li>
                     </ul>
                 </div>
@@ -273,14 +297,14 @@ include 'admin/db.php';
                             <ion-icon name="call-outline" class="text-lg text-brand-gold"></ion-icon>
                             <span>+233 20 123 4567</span>
                         </li>
-                         <li class="flex items-center gap-3 text-gray-400">
+                        <li class="flex items-center gap-3 text-gray-400">
                             <ion-icon name="mail-outline" class="text-lg text-brand-gold"></ion-icon>
                             <span>info@missionhopesda.org</span>
                         </li>
                     </ul>
                 </div>
-                
-                 <!-- Newsletter -->
+
+                <!-- Newsletter -->
                 <div>
                     <h4 class="text-base font-serif font-bold mb-4 text-gray-100">Newsletter</h4>
                     <form class="flex flex-col gap-2">
@@ -296,8 +320,8 @@ include 'admin/db.php';
         </div>
     </footer>
 
-     <script>
-         // Use Intersection Observer for fade animations
+    <script>
+        // Use Intersection Observer for fade animations
         const observerOptions = {
             threshold: 0.1
         };
@@ -311,6 +335,23 @@ include 'admin/db.php';
                 }
             });
         }, observerOptions);
+
+        // Mobile Menu Toggle
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (mobileBtn && mobileMenu) {
+            mobileBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                const icon = mobileBtn.querySelector('ion-icon');
+                if (mobileMenu.classList.contains('hidden')) {
+                    icon.setAttribute('name', 'menu-outline');
+                } else {
+                    icon.setAttribute('name', 'close-outline');
+                }
+            });
+        }
     </script>
 </body>
+
 </html>

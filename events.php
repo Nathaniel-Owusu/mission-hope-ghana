@@ -1,10 +1,14 @@
+<?php
+include 'admin/db.php';
+?>
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Events Calendar | Mission Hope SDA Church</title>
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -28,15 +32,15 @@
             }
         }
     </script>
-    
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="index.css">
-    
+
     <!-- Icons -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
-     <style>
+    <style>
         .parallax-section {
             background-attachment: fixed;
             background-position: center;
@@ -45,12 +49,13 @@
         }
     </style>
 </head>
+
 <body class="bg-brand-cream text-gray-800 antialiased selection:bg-brand-gold selection:text-white">
 
     <!-- Navigation -->
     <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-3 md:py-4">
         <div class="container mx-auto px-4 md:px-6 flex justify-between items-center">
-            <a href="index.html" class="flex items-center gap-2 group">
+            <a href="index.php" class="flex items-center gap-2 group">
                 <img src="currentlogo.png" alt="Mission Hope Logo" class="h-8 md:h-10 w-auto drop-shadow-lg transition-transform group-hover:rotate-6">
                 <div class="text-white drop-shadow-md">
                     <span class="block text-base md:text-xl font-serif font-bold leading-none tracking-wide">MISSION HOPE</span>
@@ -60,15 +65,15 @@
 
             <!-- Desktop Menu -->
             <div class="hidden md:flex items-center space-x-8">
-                <a href="index.html" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Home</a>
+                <a href="index.php" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Home</a>
                 <a href="about.html" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">About</a>
-                <a href="ministries.html" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Ministries</a>
-                <a href="sermons.html" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Sermons</a>
-                <a href="events.html" class="text-brand-gold font-bold transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-full after:h-0.5 after:bg-brand-gold after:transition-all">Events</a>
-                <a href="leadership.html" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Leadership</a>
-                <a href="gallery.html" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Gallery</a>
+                <a href="ministries.php" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Ministries</a>
+                <a href="sermons.php" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Sermons</a>
+                <a href="events.php" class="text-brand-gold font-bold transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-full after:h-0.5 after:bg-brand-gold after:transition-all">Events</a>
+                <a href="leadership.php" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Leadership</a>
+                <a href="gallery.php" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Gallery</a>
                 <a href="giving.html" class="text-white/90 hover:text-brand-gold font-medium transition-colors text-sm uppercase tracking-widest relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-brand-gold after:transition-all hover:after:w-full">Giving</a>
-                <a href="contact.html" class="px-6 py-2 bg-brand-gold/90 hover:bg-brand-gold text-white rounded-full font-semibold transition-all shadow-lg hover:shadow-brand-gold/50 transform hover:-translate-y-0.5 backdrop-blur-sm">Contact Us</a>
+                <a href="contact.php" class="px-6 py-2 bg-brand-gold/90 hover:bg-brand-gold text-white rounded-full font-semibold transition-all shadow-lg hover:shadow-brand-gold/50 transform hover:-translate-y-0.5 backdrop-blur-sm">Contact Us</a>
             </div>
 
             <!-- Mobile Button -->
@@ -80,15 +85,15 @@
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-brand-dark/95 backdrop-blur-md shadow-xl border-t border-white/10 transition-all duration-300 origin-top transform">
             <div class="flex flex-col p-6 space-y-4 text-center">
-                <a href="index.html" class="text-white hover:text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">Home</a>
+                <a href="index.php" class="text-white hover:text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">Home</a>
                 <a href="about.html" class="text-white hover:text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">About</a>
-                <a href="ministries.html" class="text-white hover:text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">Ministries</a>
-                <a href="sermons.html" class="text-white hover:text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">Sermons</a>
-                <a href="events.html" class="text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">Events</a>
-                <a href="leadership.html" class="text-white hover:text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">Leadership</a>
-                <a href="gallery.html" class="text-white hover:text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">Gallery</a>
+                <a href="ministries.php" class="text-white hover:text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">Ministries</a>
+                <a href="sermons.php" class="text-white hover:text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">Sermons</a>
+                <a href="events.php" class="text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">Events</a>
+                <a href="leadership.php" class="text-white hover:text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">Leadership</a>
+                <a href="gallery.php" class="text-white hover:text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">Gallery</a>
                 <a href="giving.html" class="text-white hover:text-brand-gold font-serif font-medium text-base tracking-widest transition-colors">Giving</a>
-                <a href="contact.html" class="inline-block px-8 py-3 bg-brand-gold text-white rounded-full font-bold shadow-lg hover:bg-white hover:text-brand-gold transition-all mx-auto text-sm">Contact Us</a>
+                <a href="contact.php" class="inline-block px-8 py-3 bg-brand-gold text-white rounded-full font-bold shadow-lg hover:bg-white hover:text-brand-gold transition-all mx-auto text-sm">Contact Us</a>
             </div>
         </div>
     </nav>
@@ -108,86 +113,59 @@
     <!-- Events Grid -->
     <section class="py-20 bg-white">
         <div class="container mx-auto px-6">
-            
+
             <div class="flex flex-col md:flex-row justify-between items-end mb-12">
                 <div>
-                     <span class="text-brand-gold font-bold tracking-widest uppercase text-xs mb-2 block">Upcoming</span>
-                    <h2 class="text-3xl md:text-4xl font-serif font-bold text-gray-900">This Month</h2>
+                    <span class="text-brand-gold font-bold tracking-widest uppercase text-xs mb-2 block">Upcoming</span>
+                    <h2 class="text-3xl md:text-4xl font-serif font-bold text-gray-900">Upcoming Events</h2>
                 </div>
-                 <div class="flex gap-2 mt-4 md:mt-0">
+                <!-- <div class="flex gap-2 mt-4 md:mt-0">
                     <button class="px-4 py-2 border border-brand-gold text-brand-gold rounded-lg hover:bg-brand-gold hover:text-white transition-colors font-bold text-sm">Previous</button>
                     <button class="px-4 py-2 bg-brand-gold text-white rounded-lg hover:bg-brand-dark transition-colors font-bold text-sm">Next Month</button>
-                 </div>
+                 </div> -->
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                
-                <!-- Event Card 1 -->
-                <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:-translate-y-2 transition-transform duration-300 flex flex-col h-full group">
-                    <div class="relative h-48 overflow-hidden">
-                        <img src="IMG_1022.jpg" alt="Event" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-                         <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-brand-dark px-3 py-1 rounded-md text-center shadow-md border border-gray-200">
-                            <span class="text-xs font-bold uppercase block text-brand-gold tracking-wider">MAR</span>
-                            <span class="text-xl font-bold font-serif">15</span>
-                        </div>
-                    </div>
-                     <div class="p-6 flex flex-col flex-grow">
-                         <span class="text-xs font-bold text-brand-gold uppercase tracking-widest mb-1">Evangelism</span>
-                        <h3 class="text-xl font-serif font-bold mb-2 text-gray-900 group-hover:text-brand-DEFAULT transition-colors">Community Health Expo</h3>
-                         <div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
-                            <ion-icon name="time-outline" class="text-brand-gold"></ion-icon> 9:00 AM - 2:00 PM
-                        </div>
-                        <p class="text-gray-600 text-sm mb-6 line-clamp-3 leading-relaxed flex-grow">
-                            Join us as we serve our community with free health screenings, consultations, and lifestyle advice.
-                        </p>
-                        <a href="#" class="inline-flex items-center justify-center w-full py-2 bg-gray-50 hover:bg-brand-cream text-brand-dark font-bold text-xs uppercase tracking-widest rounded-lg border border-gray-100 hover:border-brand-gold/30 transition-all">Add to Calendar</a>
-                    </div>
-                </div>
+                <?php
+                // Use STR_TO_DATE to sort correctly by date string format "Month Day, Year"
+                // Assuming date_str format is like "January 27, 2024"
+                $sql = "SELECT * FROM events ORDER BY STR_TO_DATE(date_str, '%M %e, %Y') DESC";
+                $result = $conn->query($sql);
 
-                <!-- Event Card 2 -->
-                <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:-translate-y-2 transition-transform duration-300 flex flex-col h-full group">
-                    <div class="relative h-48 overflow-hidden">
-                        <img src="youth.jpeg" alt="Event" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-                         <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-brand-dark px-3 py-1 rounded-md text-center shadow-md border border-gray-200">
-                            <span class="text-xs font-bold uppercase block text-brand-gold tracking-wider">MAR</span>
-                            <span class="text-xl font-bold font-serif">22</span>
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        $img = !empty($row['image']) ? $row['image'] : 'IMG_1022.jpg';
+                ?>
+                        <!-- Dynamic Event Card -->
+                        <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:-translate-y-2 transition-transform duration-300 flex flex-col h-full group">
+                            <div class="relative h-48 overflow-hidden">
+                                <img src="<?php echo htmlspecialchars($img); ?>" alt="Event" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                                <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-brand-dark px-3 py-1 rounded-md text-center shadow-md border border-gray-200">
+                                    <span class="text-xs font-bold uppercase block text-brand-gold tracking-wider"><?php echo htmlspecialchars($row['month_short']); ?></span>
+                                    <span class="text-xl font-bold font-serif"><?php echo htmlspecialchars($row['day_num']); ?></span>
+                                </div>
+                            </div>
+                            <div class="p-6 flex flex-col flex-grow">
+                                <span class="text-xs font-bold text-brand-gold uppercase tracking-widest mb-1">Event</span>
+                                <h3 class="text-xl font-serif font-bold mb-2 text-gray-900 group-hover:text-brand-DEFAULT transition-colors"><?php echo htmlspecialchars($row['title']); ?></h3>
+                                <div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+                                    <ion-icon name="time-outline" class="text-brand-gold"></ion-icon> <?php echo htmlspecialchars($row['time_str']); ?>
+                                </div>
+                                <p class="text-gray-600 text-sm mb-6 line-clamp-3 leading-relaxed flex-grow">
+                                    <?php echo htmlspecialchars($row['description']); ?>
+                                </p>
+                                <!-- <a href="#" class="inline-flex items-center justify-center w-full py-2 bg-gray-50 hover:bg-brand-cream text-brand-dark font-bold text-xs uppercase tracking-widest rounded-lg border border-gray-100 hover:border-brand-gold/30 transition-all">Add to Calendar</a> -->
+                            </div>
                         </div>
-                    </div>
-                     <div class="p-6 flex flex-col flex-grow">
-                         <span class="text-xs font-bold text-brand-gold uppercase tracking-widest mb-1">Youth Ministry</span>
-                        <h3 class="text-xl font-serif font-bold mb-2 text-gray-900 group-hover:text-brand-DEFAULT transition-colors">Global Youth Day</h3>
-                         <div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
-                            <ion-icon name="time-outline" class="text-brand-gold"></ion-icon> 8:30 AM - 4:00 PM
-                        </div>
-                        <p class="text-gray-600 text-sm mb-6 line-clamp-3 leading-relaxed flex-grow">
-                            Youths marching through the streets to share #BeTheSermon.
-                        </p>
-                         <a href="#" class="inline-flex items-center justify-center w-full py-2 bg-gray-50 hover:bg-brand-cream text-brand-dark font-bold text-xs uppercase tracking-widest rounded-lg border border-gray-100 hover:border-brand-gold/30 transition-all">Add to Calendar</a>
-                    </div>
-                </div>
-
-                <!-- Event Card 3 -->
-                <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden hover:-translate-y-2 transition-transform duration-300 flex flex-col h-full group">
-                    <div class="relative h-48 overflow-hidden">
-                        <img src="IMG_1066.jpg" alt="Event" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-                         <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-brand-dark px-3 py-1 rounded-md text-center shadow-md border border-gray-200">
-                            <span class="text-xs font-bold uppercase block text-brand-gold tracking-wider">APR</span>
-                            <span class="text-xl font-bold font-serif">12</span>
-                        </div>
-                    </div>
-                     <div class="p-6 flex flex-col flex-grow">
-                         <span class="text-xs font-bold text-brand-gold uppercase tracking-widest mb-1">Music Ministry</span>
-                        <h3 class="text-xl font-serif font-bold mb-2 text-gray-900 group-hover:text-brand-DEFAULT transition-colors">Easter Cantata</h3>
-                         <div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
-                            <ion-icon name="time-outline" class="text-brand-gold"></ion-icon> 6:00 PM
-                        </div>
-                        <p class="text-gray-600 text-sm mb-6 line-clamp-3 leading-relaxed flex-grow">
-                            A special musical presentation celebrating the resurrection of our Lord Jesus Christ.
-                        </p>
-                         <a href="#" class="inline-flex items-center justify-center w-full py-2 bg-gray-50 hover:bg-brand-cream text-brand-dark font-bold text-xs uppercase tracking-widest rounded-lg border border-gray-100 hover:border-brand-gold/30 transition-all">Add to Calendar</a>
-                    </div>
-                </div>
-
+                <?php
+                    }
+                } else {
+                    echo '<div class="col-span-full text-center py-20 text-gray-500">
+                            <ion-icon name="calendar-outline" class="text-4xl mb-4 text-gray-300"></ion-icon>
+                            <p class="text-lg">No upcoming events scheduled at this moment.</p>
+                          </div>';
+                }
+                ?>
             </div>
         </div>
     </section>
@@ -219,15 +197,15 @@
                 <div>
                     <h4 class="text-base font-serif font-bold mb-4 text-gray-100">Quick Links</h4>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="index.html" class="text-gray-400 hover:text-brand-gold transition-colors">Home</a></li>
+                        <li><a href="index.php" class="text-gray-400 hover:text-brand-gold transition-colors">Home</a></li>
                         <li><a href="about.html" class="text-gray-400 hover:text-brand-gold transition-colors">About Us</a></li>
-                        <li><a href="ministries.html" class="text-gray-400 hover:text-brand-gold transition-colors">Ministries</a></li>
-                        <li><a href="leadership.html" class="text-gray-400 hover:text-brand-gold transition-colors">Leadership</a></li>
-                        <li><a href="gallery.html" class="text-gray-400 hover:text-brand-gold transition-colors">Gallery</a></li>
-                        <li><a href="events.html" class="text-gray-400 hover:text-brand-gold transition-colors">Events</a></li>
-                        <li><a href="sermons.html" class="text-gray-400 hover:text-brand-gold transition-colors">Sermons</a></li>
+                        <li><a href="ministries.php" class="text-gray-400 hover:text-brand-gold transition-colors">Ministries</a></li>
+                        <li><a href="leadership.php" class="text-gray-400 hover:text-brand-gold transition-colors">Leadership</a></li>
+                        <li><a href="gallery.php" class="text-gray-400 hover:text-brand-gold transition-colors">Gallery</a></li>
+                        <li><a href="events.php" class="text-gray-400 hover:text-brand-gold transition-colors">Events</a></li>
+                        <li><a href="sermons.php" class="text-gray-400 hover:text-brand-gold transition-colors">Sermons</a></li>
                         <li><a href="giving.html" class="text-gray-400 hover:text-brand-gold transition-colors">Giving</a></li>
-                        <li><a href="contact.html" class="text-gray-400 hover:text-brand-gold transition-colors">Contact</a></li>
+                        <li><a href="contact.php" class="text-gray-400 hover:text-brand-gold transition-colors">Contact</a></li>
                     </ul>
                 </div>
 
@@ -249,8 +227,8 @@
                         </li>
                     </ul>
                 </div>
-                
-                 <!-- Newsletter -->
+
+                <!-- Newsletter -->
                 <div>
                     <h4 class="text-base font-serif font-bold mb-4 text-gray-100">Newsletter</h4>
                     <form class="flex flex-col gap-2">
@@ -280,17 +258,17 @@
                         link.classList.add('text-gray-800');
                     }
                 });
-                 // Handle Logo Text Color
+                // Handle Logo Text Color
                 const logoText = navbar.querySelector('.drop-shadow-md');
-                if(logoText) {
+                if (logoText) {
                     logoText.classList.remove('text-white');
                     logoText.classList.add('text-brand-dark');
                 }
 
                 // Mobile button color
-                 const mobileBtn = document.getElementById('mobile-menu-btn');
-                 if(mobileBtn) mobileBtn.classList.remove('text-white');
-                 if(mobileBtn) mobileBtn.classList.add('text-brand-dark');
+                const mobileBtn = document.getElementById('mobile-menu-btn');
+                if (mobileBtn) mobileBtn.classList.remove('text-white');
+                if (mobileBtn) mobileBtn.classList.add('text-brand-dark');
 
             } else {
                 navbar.classList.remove('bg-white/90', 'backdrop-blur-md', 'shadow-md', 'py-3');
@@ -302,24 +280,24 @@
                         link.classList.remove('text-gray-800');
                     }
                 });
-                
+
                 const logoText = navbar.querySelector('.drop-shadow-md');
-                if(logoText) {
+                if (logoText) {
                     logoText.classList.add('text-white');
                     logoText.classList.remove('text-brand-dark');
                 }
 
                 // Mobile button color
-                 const mobileBtn = document.getElementById('mobile-menu-btn');
-                 if(mobileBtn) mobileBtn.classList.add('text-white');
-                 if(mobileBtn) mobileBtn.classList.remove('text-brand-dark');
+                const mobileBtn = document.getElementById('mobile-menu-btn');
+                if (mobileBtn) mobileBtn.classList.add('text-white');
+                if (mobileBtn) mobileBtn.classList.remove('text-brand-dark');
             }
         });
 
         // Mobile Menu Toggle
         const mobileBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
-        
+
         if (mobileBtn && mobileMenu) {
             mobileBtn.addEventListener('click', () => {
                 mobileMenu.classList.toggle('hidden');
@@ -332,7 +310,7 @@
             });
         }
 
-         // Use Intersection Observer for fade animations
+        // Use Intersection Observer for fade animations
         const observerOptions = {
             threshold: 0.1
         };
@@ -348,4 +326,5 @@
         }, observerOptions);
     </script>
 </body>
+
 </html>

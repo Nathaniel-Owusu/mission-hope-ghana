@@ -1,10 +1,14 @@
+<?php
+include 'admin/db.php';
+?>
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sermons | Mission Hope SDA Church</title>
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -28,15 +32,15 @@
             }
         }
     </script>
-    
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="index.css">
-    
+
     <!-- Icons -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
-     <style>
+    <style>
         .parallax-section {
             background-attachment: fixed;
             background-position: center;
@@ -45,12 +49,13 @@
         }
     </style>
 </head>
+
 <body class="bg-brand-cream text-gray-800 antialiased selection:bg-brand-gold selection:text-white">
 
     <!-- Navigation -->
     <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-3 md:py-4">
         <div class="container mx-auto px-4 md:px-6 flex justify-between items-center">
-            <a href="index.html" class="flex items-center gap-2 group">
+            <a href="index.php" class="flex items-center gap-2 group">
                 <img src="currentlogo.png" alt="Mission Hope Logo" class="h-8 md:h-10 w-auto drop-shadow-lg transition-transform group-hover:rotate-6">
                 <div class="text-white drop-shadow-md">
                     <span class="block text-base md:text-xl font-serif font-bold leading-none tracking-wide">MISSION HOPE</span>
@@ -104,39 +109,75 @@
             </p>
         </div>
     </header>
-    
+
     <!-- Latest Message -->
     <section class="py-20 bg-white">
         <div class="container mx-auto px-6">
-            <div class="flex flex-col lg:flex-row gap-12 items-center">
-                <div class="lg:w-2/3 w-full">
-                    <div class="relative overflow-hidden rounded-2xl shadow-2xl aspect-video group cursor-pointer bg-black">
-                        <!-- Placeholder for video embed -->
-                         <img src="IMG_1022.jpg" class="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity">
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <div class="w-16 h-16 md:w-20 md:h-20 bg-brand-gold rounded-full flex items-center justify-center text-white text-3xl pl-1 shadow-[0_0_30px_rgba(212,163,115,0.5)] group-hover:scale-110 transition-transform duration-300">
-                                <ion-icon name="play"></ion-icon>
-                            </div>
+            <?php
+            // Fetch Latest Sermon
+            $latest_sql = "SELECT * FROM sermons ORDER BY date_preached DESC LIMIT 1";
+            $latest_res = $conn->query($latest_sql);
+
+            if ($latest_res->num_rows > 0) {
+                $latest = $latest_res->fetch_assoc();
+                $latest_img = "IMG_1022.jpg"; // Default
+                if ($latest['type'] == 'video' && !empty($latest['external_link'])) {
+                    // Try to get YouTube thumbnail if possible, or just use default. 
+                    // For now, simpler to just use default or if they uploaded an image type.
+                    // If we want a thumbnail, we'd need a field for it or extract it.
+                    // The inputs have 'file' upload but usually for the video itself if local, or image if Type=Image.
+                }
+            ?>
+                <div class="flex flex-col lg:flex-row gap-12 items-center">
+                    <div class="lg:w-2/3 w-full">
+                        <div class="relative overflow-hidden rounded-2xl shadow-2xl aspect-video group cursor-pointer bg-black">
+                            <?php if ($latest['type'] == 'video'): ?>
+                                <div class="absolute inset-0 flex items-center justify-center bg-black/50">
+                                    <img src="<?php echo $latest_img; ?>" class="w-full h-full object-cover opacity-60">
+                                    <a href="<?php echo htmlspecialchars($latest['external_link']); ?>" target="_blank" class="w-20 h-20 bg-brand-gold rounded-full flex items-center justify-center text-white text-3xl pl-1 shadow-[0_0_30px_rgba(212,163,115,0.5)] hover:scale-110 transition-transform duration-300 absolute z-10">
+                                        <ion-icon name="play"></ion-icon>
+                                    </a>
+                                </div>
+                            <?php elseif ($latest['type'] == 'audio'): ?>
+                                <div class="absolute inset-0 flex items-center justify-center bg-brand-dark">
+                                    <ion-icon name="mic-outline" class="text-9xl text-white/20"></ion-icon>
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <audio controls class="w-3/4">
+                                            <source src="<?php echo $latest['file_path']; ?>" type="audio/mpeg">
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="lg:w-1/3 w-full">
+                        <span class="text-brand-gold font-bold tracking-widest uppercase text-xs mb-2 block">Latest Message</span>
+                        <h2 class="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-4"><?php echo htmlspecialchars($latest['title']); ?></h2>
+                        <p class="text-gray-500 text-sm mb-6 flex items-center gap-2">
+                            <ion-icon name="calendar-outline"></ion-icon> <?php echo date('l, F j, Y', strtotime($latest['date_preached'])); ?>
+                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+                            <ion-icon name="person-outline"></ion-icon> <?php echo htmlspecialchars($latest['preacher']); ?>
+                        </p>
+                        <p class="text-gray-600 leading-relaxed mb-8">
+                            <?php echo htmlspecialchars($latest['description']); ?>
+                        </p>
+                        <div class="flex gap-4">
+                            <?php if ($latest['external_link']): ?>
+                                <a href="<?php echo htmlspecialchars($latest['external_link']); ?>" target="_blank" class="px-6 py-3 bg-brand-dark text-white rounded-lg font-bold hover:bg-brand-light transition-all shadow-lg text-sm">Watch Now</a>
+                            <?php endif; ?>
+                            <?php if ($latest['file_path']): ?>
+                                <a href="<?php echo htmlspecialchars($latest['file_path']); ?>" download class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg font-bold hover:border-brand-gold hover:text-brand-gold transition-all text-sm flex items-center gap-2"><ion-icon name="download-outline"></ion-icon> Download</a>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
-                <div class="lg:w-1/3 w-full">
-                     <span class="text-brand-gold font-bold tracking-widest uppercase text-xs mb-2 block">Latest Message</span>
-                    <h2 class="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-4">Walking by Faith</h2>
-                    <p class="text-gray-500 text-sm mb-6 flex items-center gap-2">
-                        <ion-icon name="calendar-outline"></ion-icon> Sabbath, March 20, 2026
-                        <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                        <ion-icon name="person-outline"></ion-icon> Pastor Odame
-                    </p>
-                    <p class="text-gray-600 leading-relaxed mb-8">
-                        In this powerful sermon, Pastor Odame explores what it truly means to walk by faith and not by sight, drawing lessons from the life of Abraham.
-                    </p>
-                    <div class="flex gap-4">
-                        <a href="#" class="px-6 py-3 bg-brand-dark text-white rounded-lg font-bold hover:bg-brand-light transition-all shadow-lg text-sm">Watch Now</a>
-                        <a href="#" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg font-bold hover:border-brand-gold hover:text-brand-gold transition-all text-sm flex items-center gap-2"><ion-icon name="mic-outline"></ion-icon> Listen</a>
-                    </div>
+            <?php } else { ?>
+                <div class="text-center py-12">
+                    <h3 class="text-2xl font-serif font-bold text-gray-500">No sermons uploaded yet.</h3>
+                    <p class="text-gray-400">Check back later for our latest messages.</p>
                 </div>
-            </div>
+            <?php } ?>
         </div>
     </section>
 
@@ -144,79 +185,62 @@
     <section class="py-20 bg-brand-cream border-t border-brand-cream/50">
         <div class="container mx-auto px-6">
             <h2 class="text-3xl md:text-4xl font-serif font-bold text-gray-900 text-center mb-16">Recent Sermons</h2>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                
-                <!-- Sermon Card 1 -->
-                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group">
-                    <div class="relative h-56 cursor-pointer">
-                        <img src="https://images.unsplash.com/photo-1504052434569-70ad5836ab65?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Sermon" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                             <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white text-xl border border-white/50">
-                                <ion-icon name="play"></ion-icon>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="text-xs text-brand-gold font-bold uppercase tracking-wider mb-2">March 13, 2026</div>
-                        <h3 class="text-xl font-bold font-serif text-gray-900 mb-2 group-hover:text-brand-DEFAULT transition-colors">The Power of Prayer</h3>
-                        <p class="text-gray-600 text-sm mb-4">Pastor Odame</p>
-                        <div class="flex gap-3 pt-4 border-t border-gray-100">
-                            <button class="text-gray-500 hover:text-brand-gold transition-colors text-lg"><ion-icon name="videocam-outline"></ion-icon></button>
-                            <button class="text-gray-500 hover:text-brand-gold transition-colors text-lg"><ion-icon name="headset-outline"></ion-icon></button>
-                            <button class="text-gray-500 hover:text-brand-gold transition-colors text-lg ml-auto"><ion-icon name="share-social-outline"></ion-icon></button>
-                        </div>
-                    </div>
-                </div>
+                <?php
+                // Fetch other sermons (Skip first 1)
+                $archive_sql = "SELECT * FROM sermons ORDER BY date_preached DESC LIMIT 6 OFFSET 1";
+                $archive_res = $conn->query($archive_sql);
 
-                <!-- Sermon Card 2 -->
-                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group">
-                    <div class="relative h-56 cursor-pointer">
-                        <img src="https://images.unsplash.com/photo-1438232992991-995b7058bbb3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Sermon" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                             <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white text-xl border border-white/50">
-                                <ion-icon name="play"></ion-icon>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="text-xs text-brand-gold font-bold uppercase tracking-wider mb-2">March 6, 2026</div>
-                        <h3 class="text-xl font-bold font-serif text-gray-900 mb-2 group-hover:text-brand-DEFAULT transition-colors">Living with Purpose</h3>
-                        <p class="text-gray-600 text-sm mb-4">Elder Abraham</p>
-                        <div class="flex gap-3 pt-4 border-t border-gray-100">
-                            <button class="text-gray-500 hover:text-brand-gold transition-colors text-lg"><ion-icon name="videocam-outline"></ion-icon></button>
-                            <button class="text-gray-500 hover:text-brand-gold transition-colors text-lg"><ion-icon name="headset-outline"></ion-icon></button>
-                            <button class="text-gray-500 hover:text-brand-gold transition-colors text-lg ml-auto"><ion-icon name="share-social-outline"></ion-icon></button>
-                        </div>
-                    </div>
-                </div>
+                if ($archive_res->num_rows > 0) {
+                    while ($row = $archive_res->fetch_assoc()) {
+                ?>
+                        <!-- Sermon Card -->
+                        <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group">
+                            <div class="relative h-56 cursor-pointer bg-black">
+                                <!-- Placeholder Image -->
+                                <img src="https://images.unsplash.com/photo-1438232992991-995b7058bbb3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Sermon" class="w-full h-full object-cover opacity-80">
 
-                <!-- Sermon Card 3 -->
-                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group">
-                    <div class="relative h-56 cursor-pointer">
-                        <img src="https://images.unsplash.com/photo-1445445290350-12a3b863b119?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Sermon" class="w-full h-full object-cover">
-                         <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                             <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white text-xl border border-white/50">
-                                <ion-icon name="play"></ion-icon>
+                                <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white text-xl border border-white/50">
+                                        <ion-icon name="play"></ion-icon>
+                                    </div>
+                                </div>
+                                <?php if ($row['type']): ?>
+                                    <div class="absolute top-2 right-2 px-2 py-1 bg-black/60 text-white text-[10px] uppercase font-bold rounded backdrop-blur-sm">
+                                        <?php echo $row['type']; ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                            <div class="p-6">
+                                <div class="text-xs text-brand-gold font-bold uppercase tracking-wider mb-2"><?php echo date('M d, Y', strtotime($row['date_preached'])); ?></div>
+                                <h3 class="text-xl font-bold font-serif text-gray-900 mb-2 group-hover:text-brand-DEFAULT transition-colors truncate"><?php echo htmlspecialchars($row['title']); ?></h3>
+                                <p class="text-gray-600 text-sm mb-4"><?php echo htmlspecialchars($row['preacher']); ?></p>
+                                <div class="flex gap-3 pt-4 border-t border-gray-100">
+                                    <?php if ($row['external_link']): ?>
+                                        <a href="<?php echo $row['external_link']; ?>" target="_blank" class="text-gray-500 hover:text-brand-gold transition-colors text-lg" title="Watch"><ion-icon name="videocam-outline"></ion-icon></a>
+                                    <?php endif; ?>
+                                    <?php if ($row['file_path']): ?>
+                                        <a href="<?php echo $row['file_path']; ?>" download class="text-gray-500 hover:text-brand-gold transition-colors text-lg" title="Download"><ion-icon name="download-outline"></ion-icon></a>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="text-xs text-brand-gold font-bold uppercase tracking-wider mb-2">Feb 27, 2026</div>
-                        <h3 class="text-xl font-bold font-serif text-gray-900 mb-2 group-hover:text-brand-DEFAULT transition-colors">Grace Abounding</h3>
-                        <p class="text-gray-600 text-sm mb-4">Guest Speaker</p>
-                        <div class="flex gap-3 pt-4 border-t border-gray-100">
-                            <button class="text-gray-500 hover:text-brand-gold transition-colors text-lg"><ion-icon name="videocam-outline"></ion-icon></button>
-                            <button class="text-gray-500 hover:text-brand-gold transition-colors text-lg"><ion-icon name="headset-outline"></ion-icon></button>
-                            <button class="text-gray-500 hover:text-brand-gold transition-colors text-lg ml-auto"><ion-icon name="share-social-outline"></ion-icon></button>
-                        </div>
-                    </div>
-                </div>
+                <?php
+                    }
+                } else {
+                    if ($latest_res->num_rows <= 0) {
+                        // Already showed "No sermons" above, maybe don't show anything here or show generic message
+                    } else {
+                        echo '<div class="col-span-full text-center text-gray-500 italic">No other sermons in the archive.</div>';
+                    }
+                }
+                ?>
 
             </div>
-            
+
             <div class="mt-16 text-center">
-                 <a href="#" class="inline-block px-8 py-3 border border-brand-dark text-brand-dark font-bold rounded-full hover:bg-brand-dark hover:text-white transition-all">
+                <a href="#" class="inline-block px-8 py-3 border border-brand-dark text-brand-dark font-bold rounded-full hover:bg-brand-dark hover:text-white transition-all">
                     View Archive
                 </a>
             </div>
@@ -256,7 +280,7 @@
                         <li><a href="leadership.php" class="text-gray-400 hover:text-brand-gold transition-colors">Leadership</a></li>
                         <li><a href="gallery.php" class="text-gray-400 hover:text-brand-gold transition-colors">Gallery</a></li>
                         <li><a href="events.php" class="text-gray-400 hover:text-brand-gold transition-colors">Events</a></li>
-                        <li><a href="sermons.php" class="text-gray-400 hover:text-brand-gold transition-colors">Sermons</a></li>
+                        <li><a href="sermons.php" class="text-brand-gold hover:text-brand-gold transition-colors">Sermons</a></li>
                         <li><a href="giving.html" class="text-gray-400 hover:text-brand-gold transition-colors">Giving</a></li>
                         <li><a href="contact.php" class="text-gray-400 hover:text-brand-gold transition-colors">Contact</a></li>
                     </ul>
@@ -268,7 +292,7 @@
                     <ul class="space-y-3 text-sm">
                         <li class="flex items-start gap-3 text-gray-400">
                             <ion-icon name="location-outline" class="text-lg text-brand-gold mt-1"></ion-icon>
-                            <span>123 Hope Street,<br>Accra, Ghana</span>
+                            <span>Takofiano P.O. Box 162,<br>Techiman, Ghana</span>
                         </li>
                         <li class="flex items-center gap-3 text-gray-400">
                             <ion-icon name="call-outline" class="text-lg text-brand-gold"></ion-icon>
@@ -280,8 +304,8 @@
                         </li>
                     </ul>
                 </div>
-                
-                 <!-- Newsletter -->
+
+                <!-- Newsletter -->
                 <div>
                     <h4 class="text-base font-serif font-bold mb-4 text-gray-100">Newsletter</h4>
                     <form class="flex flex-col gap-2">
@@ -311,17 +335,17 @@
                         link.classList.add('text-gray-800');
                     }
                 });
-                 // Handle Logo Text Color
+                // Handle Logo Text Color
                 const logoText = navbar.querySelector('.drop-shadow-md');
-                if(logoText) {
+                if (logoText) {
                     logoText.classList.remove('text-white');
                     logoText.classList.add('text-brand-dark');
                 }
 
                 // Mobile button color
-                 const mobileBtn = document.getElementById('mobile-menu-btn');
-                 if(mobileBtn) mobileBtn.classList.remove('text-white');
-                 if(mobileBtn) mobileBtn.classList.add('text-brand-dark');
+                const mobileBtn = document.getElementById('mobile-menu-btn');
+                if (mobileBtn) mobileBtn.classList.remove('text-white');
+                if (mobileBtn) mobileBtn.classList.add('text-brand-dark');
 
             } else {
                 navbar.classList.remove('bg-white/90', 'backdrop-blur-md', 'shadow-md', 'py-3');
@@ -333,24 +357,24 @@
                         link.classList.remove('text-gray-800');
                     }
                 });
-                
+
                 const logoText = navbar.querySelector('.drop-shadow-md');
-                if(logoText) {
+                if (logoText) {
                     logoText.classList.add('text-white');
                     logoText.classList.remove('text-brand-dark');
                 }
 
                 // Mobile button color
-                 const mobileBtn = document.getElementById('mobile-menu-btn');
-                 if(mobileBtn) mobileBtn.classList.add('text-white');
-                 if(mobileBtn) mobileBtn.classList.remove('text-brand-dark');
+                const mobileBtn = document.getElementById('mobile-menu-btn');
+                if (mobileBtn) mobileBtn.classList.add('text-white');
+                if (mobileBtn) mobileBtn.classList.remove('text-brand-dark');
             }
         });
 
         // Mobile Menu Toggle
         const mobileBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
-        
+
         if (mobileBtn && mobileMenu) {
             mobileBtn.addEventListener('click', () => {
                 mobileMenu.classList.toggle('hidden');
@@ -363,7 +387,7 @@
             });
         }
 
-         // Use Intersection Observer for fade animations
+        // Use Intersection Observer for fade animations
         const observerOptions = {
             threshold: 0.1
         };
@@ -379,4 +403,5 @@
         }, observerOptions);
     </script>
 </body>
+
 </html>
