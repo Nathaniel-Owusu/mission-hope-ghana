@@ -64,41 +64,86 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_sms'])) {
     $message = $conn->real_escape_string($_POST['message']);
     $group = $conn->real_escape_string($_POST['recipient_group']);
 
-    $recipients_str = "";
+    // Prepare recipients array
+    $recipients_array = [];
+
     if ($group === 'custom') {
-        $recipients_str = $conn->real_escape_string($_POST['custom_numbers']);
+        $custom_list = explode(',', $conn->real_escape_string($_POST['custom_numbers']));
+        foreach ($custom_list as $num) {
+            $clean_num = trim($num);
+            if (!empty($clean_num)) {
+                $recipients_array[] = $clean_num;
+            }
+        }
+        $recipients_str = implode(", ", $recipients_array);
     } else {
-        // Fetch numbers from group
         $recipients_str = $group; // Default label
         $result = $conn->query("SELECT phone FROM members WHERE group_name = '$group'");
-        $numbers = [];
         while ($row = $result->fetch_assoc()) {
-            $numbers[] = $row['phone'];
+            if (!empty($row['phone'])) {
+                $recipients_array[] = trim($row['phone']);
+            }
         }
-        if (!empty($numbers)) {
-            $recipients_str = implode(", ", $numbers); // Simulating the list for the record
+        if (!empty($recipients_array)) {
+            $recipients_str = count($recipients_array) . " contacts from " . $group;
+        }
+    }
+
+    if (empty($message) || empty($recipients_array)) {
+        $status = 'Failed';
+        $error_msg = "Message or recipients cannot be empty.";
+    } else {
+        // ARKESEL SMS API INTEGRATION
+        $api_key = 'adv_370c7214d97fa75decbc19cbbd34cf5e68c9733c56ca9524409f9bdb28cc90e5';
+        $sender_id = 'MissionHope'; // Must be registered with Arkesel
+        $url = "https://sms.arkesel.com/api/v2/sms/send";
+
+        $data = [
+            'sender' => $sender_id,
+            'message' => $message,
+            'recipients' => $recipients_array
+        ];
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'api-key: ' . $api_key,
+            'Content-Type: application/json'
+        ]);
+
+        $response = curl_exec($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curl_error = curl_error($ch);
+        curl_close($ch);
+
+        // Decode response to check status
+        $resp_json = json_decode($response, true);
+
+        if ($http_code == 200 && isset($resp_json['status']) && $resp_json['status'] == 'success') {
+            $status = 'Sent';
         } else {
             $status = 'Failed';
-            $error_msg = "No contacts found in selected group.";
+            // Extract error message
+            $api_msg = isset($resp_json['message']) ? $resp_json['message'] : 'Unknown error';
+            if ($curl_error) $api_msg .= " (Network: $curl_error)";
+            $error_msg = "API Error: " . $api_msg;
         }
     }
 
-    // Simulate sending (In real implementation, integrate SMS API here)
-    $status = 'Sent';
-    // If empty recipient or message, fail
-    if (empty($message) || empty($recipients_str)) {
-        $status = 'Failed';
-        if (empty($error_msg)) $error_msg = "Message or recipients cannot be empty.";
-    }
+    // Save to History
+    $safe_recipients = $conn->real_escape_string($recipients_str);
+    $safe_status = $conn->real_escape_string($status);
 
-    if ($status == 'Sent') {
-        $sql = "INSERT INTO sms_history (message, recipients, status) VALUES ('$message', '$recipients_str', '$status')";
-        if ($conn->query($sql) === TRUE) {
+    $sql = "INSERT INTO sms_history (message, recipients, status) VALUES ('$message', '$safe_recipients', '$safe_status')";
+    if ($conn->query($sql) === TRUE) {
+        if ($status == 'Sent') {
             header("Location: sms.php?status=sent");
             exit();
-        } else {
-            $error_msg = "Error sending broadcast: " . $conn->error;
         }
+    } else {
+        if (empty($error_msg)) $error_msg = "Database Error: " . $conn->error;
     }
 }
 ?>
