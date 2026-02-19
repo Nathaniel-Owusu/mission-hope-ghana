@@ -155,4 +155,69 @@ CREATE TABLE IF NOT EXISTS `sms_history` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sermons`
+--
+
+CREATE TABLE IF NOT EXISTS `sermons` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `preacher` varchar(255) DEFAULT NULL,
+  `type` varchar(50) DEFAULT 'video',
+  `file_path` varchar(255) DEFAULT NULL,
+  `external_link` varchar(255) DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `date_preached` date DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `settings`
+--
+
+CREATE TABLE IF NOT EXISTS `settings` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `setting_key` varchar(100) NOT NULL UNIQUE,
+  `setting_value` text DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `settings`
+--
+
+INSERT INTO `settings` (`setting_key`, `setting_value`) VALUES
+('church_name', 'Mission Hope SDA Church'),
+('contact_email', 'info@missionhope.org'),
+('address', '123 Faith Street, Accra, Ghana'),
+('facebook', 'facebook.com/missionhope'),
+('youtube', 'youtube.com/missionhope'),
+('instagram', 'instagram.com/missionhope')
+ON DUPLICATE KEY UPDATE setting_value=setting_value;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) NOT NULL UNIQUE,
+  `password` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+-- No default user dumped here to avoid plain text issues, use setup_login.php or insert manually
+-- Default password hash for 'missionhope2024': $2y$10$YourGeneratedHashHere...
+
 COMMIT;
