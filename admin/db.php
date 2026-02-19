@@ -29,9 +29,9 @@ if (!$is_localhost) {
     // HOSTINGER CREDENTIALS
     // These specific credentials will be used when you upload to the live server.
     $server = "localhost";
-    $username = "u957056558_admin_user";
-    $password = "965321uhp]";
-    $dbname = "u957056558_missionhope";
+    $username = "u957056558_php_missionHop";
+    $password = "churchMH2026";
+    $dbname = "u957056558_php_missionHop";
 
     // Disable error reporting on live site for security
     mysqli_report(MYSQLI_REPORT_OFF);
