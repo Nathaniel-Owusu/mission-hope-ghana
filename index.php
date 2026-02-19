@@ -298,7 +298,7 @@
                 $sql = "SELECT * FROM announcements ORDER BY created_at DESC LIMIT 3";
                 $result = $conn->query($sql);
 
-                if ($result->num_rows > 0) {
+                if ($result && $result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
                         $date_str = isset($row['created_at']) ? date('M d, Y', strtotime($row['created_at'])) : 'Recent';
                         $title = htmlspecialchars($row['title']);
@@ -350,7 +350,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <?php
                 $events_res = $conn->query("SELECT * FROM events ORDER BY STR_TO_DATE(date_str, '%M %e, %Y') DESC LIMIT 3");
-                if ($events_res->num_rows > 0) {
+                if ($events_res && $events_res->num_rows > 0) {
                     while ($event = $events_res->fetch_assoc()) {
                         $img = $event['image'] ? $event['image'] : 'IMG_1022.jpg';
 
