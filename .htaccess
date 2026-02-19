@@ -1,2 +1,14 @@
-Options -Indexes  
-DirectoryIndex index.php 
+RewriteEngine On
+
+# 1. Force HTTPS (security best practice)
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# 2. Redirect index.php to root (http://site.com/index.php -> http://site.com/)
+RewriteCond %{THE_REQUEST} ^.*/index\.php 
+RewriteRule ^(.*)index.php$ /$1 [R=301,L]
+
+# 3. Remove .php extension from URLs (e.g. site.com/about.php -> site.com/about)
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*)$ $1.php [L]
