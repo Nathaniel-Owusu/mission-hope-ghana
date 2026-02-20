@@ -1,7 +1,7 @@
 <?php
 // admin/events.php
-session_start();
-// include 'auth_session.php'; // Uncomment when auth is ready
+// session_start();
+include 'auth_session.php';
 include 'db.php';
 
 // Handle Add Event

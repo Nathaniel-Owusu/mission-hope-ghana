@@ -1,6 +1,6 @@
 <?php
 include 'db.php';
-// include 'auth_session.php'; 
+include 'auth_session.php';
 
 // Ensure settings table exists
 $conn->query("CREATE TABLE IF NOT EXISTS settings (

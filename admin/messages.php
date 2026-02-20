@@ -1,6 +1,6 @@
 <?php
 include 'db.php';
-// include 'auth_session.php'; // Uncomment when auth is ready
+include 'auth_session.php';
 
 // Handle Delete
 if (isset($_GET['delete'])) {

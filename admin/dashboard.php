@@ -1,7 +1,7 @@
 <?php
 // admin/dashboard.php
 include 'db.php'; // Ensure database connection
-// include 'auth_session.php'; // Uncomment when auth is ready
+include 'auth_session.php';
 
 // --- Fetch Stats ---
 $members_query = $conn->query("SELECT COUNT(*) as count FROM leadership"); // Placeholder table for members

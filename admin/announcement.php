@@ -1,5 +1,6 @@
 <?php
 include 'db.php';
+include 'auth_session.php';
 
 // Add is_urgent column if it doesn't exist
 $check_col = $conn->query("SHOW COLUMNS FROM announcements LIKE 'is_urgent'");

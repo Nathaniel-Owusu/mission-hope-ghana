@@ -1,6 +1,6 @@
 <?php
 include 'db.php';
-// include 'auth_session.php'; 
+include 'auth_session.php';
 
 // Ensure tables exist
 $conn->query("CREATE TABLE IF NOT EXISTS sms_history (
@@ -128,7 +128,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_sms'])) {
             // Extract error message
             $api_msg = isset($resp_json['message']) ? $resp_json['message'] : 'Unknown error';
             if ($curl_error) $api_msg .= " (Network: $curl_error)";
-            $error_msg = "API Error: " . $api_msg;
+            // DEBUG: Show full response to help user
+            $error_msg = "API Error: " . $api_msg . " <br><small>Details: " . htmlspecialchars($response) . "</small>";
         }
     }
 

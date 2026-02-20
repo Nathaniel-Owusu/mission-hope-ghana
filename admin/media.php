@@ -1,6 +1,6 @@
 <?php
 include 'db.php';
-// include 'auth_session.php'; 
+include 'auth_session.php';
 
 // Handle Upload
 if (isset($_POST['upload'])) {

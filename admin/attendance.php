@@ -1,5 +1,6 @@
 <?php
 include 'db.php';
+include 'auth_session.php';
 
 // Ensure tables exist
 $conn->query("CREATE TABLE IF NOT EXISTS attendance_records (
