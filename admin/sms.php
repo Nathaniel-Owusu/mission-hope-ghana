@@ -1,6 +1,25 @@
 <?php
 include 'db.php';
-include 'auth_session.php';
+include 'adverse_sms_client.php';
+
+// Initialize Adverse SMS Client
+$apiKey = 'adv_370c7214d97fa75decbc19cbbd34cf5e68c9733c56ca9524409f9bdb28cc90e5';
+$smsClient = new AdverseSmsClient($apiKey);
+
+// Fetch Balance & Sender IDs
+$balance = 0;
+$senderIds = [];
+$error_api = "";
+
+try {
+    $balanceData = $smsClient->getBalance();
+    $balance = $balanceData['data']['credits_balance'] ?? 0;
+
+    $senderIdsData = $smsClient->listApprovedSenderIds();
+    $senderIds = $senderIdsData['data']['sender_ids'] ?? [];
+} catch (Exception $e) {
+    $error_api = "API Error: " . $e->getMessage();
+}
 
 // Ensure tables exist
 $conn->query("CREATE TABLE IF NOT EXISTS sms_history (
@@ -21,6 +40,7 @@ $conn->query("CREATE TABLE IF NOT EXISTS members (
 
 $success_msg = "";
 $error_msg = "";
+if ($error_api) $error_msg = $error_api;
 
 // Handle Delete Member
 if (isset($_GET['delete_member'])) {
@@ -61,14 +81,15 @@ if (isset($_GET['status'])) {
 
 // Handle Send SMS
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_sms'])) {
-    $message = $conn->real_escape_string($_POST['message']);
+    $message = $_POST['message']; // No escape here, handled by client/json
     $group = $conn->real_escape_string($_POST['recipient_group']);
+    $sender_id_val = intval($_POST['sender_id']); // Ensure ID is integer
 
     // Prepare recipients array
     $recipients_array = [];
 
     if ($group === 'custom') {
-        $custom_list = explode(',', $conn->real_escape_string($_POST['custom_numbers']));
+        $custom_list = explode(',', $_POST['custom_numbers']);
         foreach ($custom_list as $num) {
             $clean_num = trim($num);
             if (!empty($clean_num)) {
@@ -76,6 +97,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_sms'])) {
             }
         }
         $recipients_str = implode(", ", $recipients_array);
+        // Show count for display
+        $recipients_display = count($recipients_array) . " custom numbers";
     } else {
         $recipients_str = $group; // Default label
         $result = $conn->query("SELECT phone FROM members WHERE group_name = '$group'");
@@ -84,62 +107,49 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_sms'])) {
                 $recipients_array[] = trim($row['phone']);
             }
         }
-        if (!empty($recipients_array)) {
-            $recipients_str = count($recipients_array) . " contacts from " . $group;
-        }
+        $recipients_display = count($recipients_array) . " contacts from " . $group;
+        // API expects array of strings
     }
 
     if (empty($message) || empty($recipients_array)) {
         $status = 'Failed';
         $error_msg = "Message or recipients cannot be empty.";
+    } elseif ($sender_id_val <= 0) {
+        $status = 'Failed';
+        $error_msg = "Invalid Sender ID selected.";
     } else {
-        // ARKESEL SMS API INTEGRATION
-        $api_key = 'adv_370c7214d97fa75decbc19cbbd34cf5e68c9733c56ca9524409f9bdb28cc90e5';
-        $sender_id = 'MissionHope'; // Must be registered with Arkesel
-        $url = "https://sms.arkesel.com/api/v2/sms/send";
+        // ADVERSE SMS API INTEGRATION
+        try {
+            $response = $smsClient->send($recipients_array, $message, $sender_id_val);
 
-        $data = [
-            'sender' => $sender_id,
-            'message' => $message,
-            'recipients' => $recipients_array
-        ];
-
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'api-key: ' . $api_key,
-            'Content-Type: application/json'
-        ]);
-
-        $response = curl_exec($ch);
-        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $curl_error = curl_error($ch);
-        curl_close($ch);
-
-        // Decode response to check status
-        $resp_json = json_decode($response, true);
-
-        if ($http_code == 200 && isset($resp_json['status']) && $resp_json['status'] == 'success') {
-            $status = 'Sent';
-        } else {
+            if (isset($response['success']) && $response['success']) {
+                $status = 'Sent';
+                $credits_used = $response['data']['credits_used'] ?? 0;
+                $success_msg = "Sent successfully! Credits used: " . $credits_used;
+            } else {
+                $status = 'Failed';
+                $error_msg = "API Error: " . ($response['message'] ?? 'Unknown');
+            }
+        } catch (Exception $e) {
             $status = 'Failed';
-            // Extract error message
-            $api_msg = isset($resp_json['message']) ? $resp_json['message'] : 'Unknown error';
-            if ($curl_error) $api_msg .= " (Network: $curl_error)";
-            // DEBUG: Show full response to help user
-            $error_msg = "API Error: " . $api_msg . " <br><small>Details: " . htmlspecialchars($response) . "</small>";
+            $error_msg = "Sending Error: " . $e->getMessage();
         }
     }
 
-    // Save to History
-    $safe_recipients = $conn->real_escape_string($recipients_str);
+    // Save to History (DB escaping needed here)
+    $safe_message = $conn->real_escape_string($message);
+    $safe_recipients = $conn->real_escape_string($recipients_display);
     $safe_status = $conn->real_escape_string($status);
 
-    $sql = "INSERT INTO sms_history (message, recipients, status) VALUES ('$message', '$safe_recipients', '$safe_status')";
+    $sql = "INSERT INTO sms_history (message, recipients, status) VALUES ('$safe_message', '$safe_recipients', '$safe_status')";
     if ($conn->query($sql) === TRUE) {
         if ($status == 'Sent') {
+            // Log Admin Activity
+            if (function_exists('logActivity')) {
+                $admin_id = $_SESSION['admin_id'] ?? 0;
+                logActivity($conn, $admin_id, "SMS Broadcast", "Sent to $recipients_display");
+            }
+
             header("Location: sms.php?status=sent");
             exit();
         }
@@ -267,7 +277,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_sms'])) {
                         <!-- Credits Badge -->
                         <div class="hidden md:flex items-center gap-2 bg-white/10 px-3 py-1.5 rounded-lg border border-white/20 text-white backdrop-blur-sm">
                             <ion-icon name="wallet-outline" class="text-brand-gold"></ion-icon>
-                            <span class="text-xs font-bold">CREDITS: <span class="text-brand-gold">2,450</span></span>
+                            <span class="text-xs font-bold">CREDITS: <span class="text-brand-gold"><?php echo number_format($balance, 2); ?></span></span>
                         </div>
 
                         <div class="glass-panel rounded-full px-4 py-2 flex items-center shadow-lg">
@@ -399,7 +409,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_sms'])) {
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Sender ID</label>
-                                    <input type="text" value="MissionHope" readonly class="w-full px-4 py-3 border border-slate-200 rounded-xl bg-slate-100 text-slate-500 cursor-not-allowed font-bold tracking-wide outline-none">
+                                    <div class="relative">
+                                        <select name="sender_id" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:border-brand-gold outline-none bg-white appearance-none">
+                                            <?php if (!empty($senderIds)): ?>
+                                                <?php foreach ($senderIds as $sid): ?>
+                                                    <option value="<?php echo $sid['id']; ?>"><?php echo htmlspecialchars($sid['sender_name']); ?></option>
+                                                <?php endforeach; ?>
+                                            <?php else: ?>
+                                                <option value="" disabled selected>No Approved Sender IDs</option>
+                                            <?php endif; ?>
+                                        </select>
+                                        <ion-icon name="chevron-down-outline" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></ion-icon>
+                                    </div>
+                                    <p class="text-[10px] text-slate-400 mt-1">Only approved sender IDs can be used.</p>
                                 </div>
                                 <div>
                                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Recipients Group</label>
@@ -455,7 +477,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_sms'])) {
                     <div class="bg-gradient-to-br from-[#022c22] to-emerald-800 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden group">
                         <div class="absolute top-0 right-0 w-32 h-32 bg-yellow-400 rounded-full mix-blend-overlay blur-3xl opacity-20 -mr-10 -mt-10"></div>
                         <h3 class="font-serif font-bold text-lg mb-1">SMS Balance</h3>
-                        <h2 class="text-4xl font-bold mb-4 font-mono">2,450</h2>
+                        <h2 class="text-4xl font-bold mb-4 font-mono"><?php echo number_format($balance, 2); ?></h2>
                         <button class="w-full py-2.5 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 rounded-xl text-sm font-semibold transition-all">
                             Top Up Credits
                         </button>
