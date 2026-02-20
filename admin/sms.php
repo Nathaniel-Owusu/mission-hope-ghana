@@ -412,11 +412,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_sms'])) {
                                     <div class="relative">
                                         <select name="sender_id" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:border-brand-gold outline-none bg-white appearance-none">
                                             <?php if (!empty($senderIds)): ?>
-                                                <?php foreach ($senderIds as $sid): ?>
-                                                    <option value="<?php echo $sid['id']; ?>"><?php echo htmlspecialchars($sid['sender_name']); ?></option>
-                                                <?php endforeach; ?>
+                                                <?php
+                                                $found = false;
+                                                foreach ($senderIds as $sid) {
+                                                    $selected = (strcasecmp($sid['sender_name'], 'MissionHope') === 0) ? 'selected' : '';
+                                                    if ($selected) $found = true;
+                                                    echo '<option value="' . $sid['id'] . '" ' . $selected . '>' . htmlspecialchars($sid['sender_name']) . '</option>';
+                                                }
+                                                // If not found in API list, allow manual entry fallback (though API requires ID, this is a UX hint)
+                                                if (!$found && empty($senderIds)) {
+                                                    echo '<option value="" disabled>No Sender IDs found. Please register "MissionHope".</option>';
+                                                }
+                                                ?>
                                             <?php else: ?>
-                                                <option value="" disabled selected>No Approved Sender IDs</option>
+                                                <option value="" disabled selected>No Approved Sender IDs (Check API / Connection)</option>
                                             <?php endif; ?>
                                         </select>
                                         <ion-icon name="chevron-down-outline" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></ion-icon>
