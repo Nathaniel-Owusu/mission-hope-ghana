@@ -4,7 +4,7 @@
 class AdverseSmsClient
 {
     private string $apiKey;
-    private string $baseUrl = 'https://services.getadverse.com/api';
+    private string $baseUrl = 'https://app.adverseforms.com/api';
 
     public function __construct(string $apiKey)
     {
