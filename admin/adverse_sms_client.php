@@ -4,11 +4,11 @@
 class AdverseSmsClient
 {
     private string $apiKey;
-    private string $baseUrl = 'https://services.getadverse.com/api/v1';
+    private string $baseUrl = 'https://services.getadverse.com/api';
 
     public function __construct(string $apiKey)
     {
-        $this->apiKey = $apiKey;
+        $this->apiKey = trim($apiKey);
     }
 
     private function request(string $method, string $path, ?array $body = null, array $params = []): array
