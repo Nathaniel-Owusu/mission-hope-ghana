@@ -1,8 +1,21 @@
 <?php
 $current_page = basename($_SERVER['PHP_SELF']);
 ?>
-<aside class="w-72 bg-[#022c22] text-white flex flex-col shadow-2xl z-50 relative h-screen sticky top-0">
+<!-- Mobile Toggle Button (Floating) -->
+<button onclick="toggleSidebar()" class="md:hidden fixed bottom-6 right-6 z-[60] bg-amber-500 text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform">
+    <ion-icon name="menu-outline" class="text-2xl"></ion-icon>
+</button>
+
+<!-- Overlay for Mobile -->
+<div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity opacity-0 md:hidden"></div>
+
+<aside id="sidebar" class="w-72 bg-[#022c22] text-white flex flex-col shadow-2xl z-50 h-[100dvh] fixed md:relative transition-transform duration-300 -translate-x-full md:translate-x-0">
     <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#34d399 1px, transparent 1px); background-size: 20px 20px;"></div>
+
+    <!-- Mobile Close Button -->
+    <button onclick="toggleSidebar()" class="md:hidden absolute top-4 right-4 text-white/50 hover:text-white">
+        <ion-icon name="close-outline" class="text-2xl"></ion-icon>
+    </button>
 
     <div class="p-8 pb-4 relative z-10">
         <div class="flex items-center gap-3">
@@ -94,3 +107,22 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </div>
     </div>
 </aside>
+
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+
+        if (sidebar.classList.contains('-translate-x-full')) {
+            // Open
+            sidebar.classList.remove('-translate-x-full');
+            overlay.classList.remove('hidden');
+            setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+        } else {
+            // Close
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('opacity-0');
+            setTimeout(() => overlay.classList.add('hidden'), 300);
+        }
+    }
+</script>
