@@ -9,7 +9,7 @@ $apiKey = 'adv_f8dc982f5c52f87f09dfe9141a74c5fb96a8dfecd521b934e5e7d2b8cf5561cb'
 
 echo "<h2>Adverse API Connection Test</h2>";
 echo "<p>API Key: " . substr($apiKey, 0, 10) . "...</p>";
-echo "<p>Base URL: https://app.adverseforms.com/api</p>";
+echo "<p>Base URL: https://services.getadverse.com/api</p>";
 echo "<hr>";
 
 // Step 0: Test Auth Verify endpoint (recommended by Adverse support)
