@@ -33,6 +33,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_announcement'])) {
 
     if ($stmt->execute()) {
         $msg = "Announcement posted successfully.";
+
+        // Log Activity
+        if (function_exists('logActivity')) {
+            $admin_id = $_SESSION['admin_id'] ?? 0;
+            logActivity($conn, $admin_id, "New Announcement", "Posted: " . substr($title, 0, 30));
+        }
     } else {
         $error = "Error posting announcement: " . $conn->error;
     }

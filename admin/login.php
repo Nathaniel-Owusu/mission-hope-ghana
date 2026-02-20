@@ -23,6 +23,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Login Success
             $_SESSION['admin_logged_in'] = true;
             $_SESSION['admin_id'] = $row['id'];
+
+            // Log Activity
+            if (function_exists('logActivity')) {
+                logActivity($conn, $row['id'], "Login", "Admin logged in successfully.");
+            }
             header("Location: dashboard.php");
             exit;
         } else {

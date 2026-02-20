@@ -43,6 +43,15 @@ if (!$is_localhost) {
 try {
     $conn = new mysqli($server, $username, $password, $dbname);
     $conn->set_charset("utf8mb4");
+
+    // Create Admin Activity Logs Table (if it doesn't exist)
+    $conn->query("CREATE TABLE IF NOT EXISTS admin_activity_logs (
+        id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        admin_id INT(11) DEFAULT NULL,
+        action VARCHAR(255) NOT NULL,
+        details TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )");
 } catch (Exception $e) {
     // Graceful error handling
     if ($is_localhost) {
@@ -54,5 +63,17 @@ try {
                 <h2 style='color:#e53e3e'>Service Temporarily Unavailable</h2>
                 <p>We are experiencing technical difficulties. Please try again later.</p>
              </div>");
+    }
+}
+
+// Helper function to log admin activities
+if (!function_exists('logActivity')) {
+    function logActivity($conn, $admin_id, $action, $details = "")
+    {
+        $stmt = $conn->prepare("INSERT INTO admin_activity_logs (admin_id, action, details) VALUES (?, ?, ?)");
+        // Use 0 or NULL if admin_id is not set
+        $aid = $admin_id ? $admin_id : 0;
+        $stmt->bind_param("iss", $aid, $action, $details);
+        $stmt->execute();
     }
 }

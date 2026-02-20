@@ -1,4 +1,6 @@
-<?php include 'admin/db.php'; ?>
+<?php include 'admin/db.php';
+include 'admin/track_visitor.php';
+?>
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 

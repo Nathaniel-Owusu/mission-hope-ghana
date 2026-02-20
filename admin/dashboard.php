@@ -22,6 +22,16 @@ $recent_msgs = $conn->query("SELECT * FROM messages ORDER BY created_at DESC LIM
 // --- Fetch Upcoming Events ---
 $upcoming_events = $conn->query("SELECT * FROM events ORDER BY id DESC LIMIT 2");
 
+// --- Fetch Visitor Stats ---
+$visitors_query = $conn->query("SELECT COUNT(*) as count FROM visitor_logs");
+$visitors_count = $visitors_query ? $visitors_query->fetch_assoc()['count'] : 0;
+
+$unique_visitors_query = $conn->query("SELECT COUNT(DISTINCT ip_address) as count FROM visitor_logs");
+$unique_visitors_count = $unique_visitors_query ? $unique_visitors_query->fetch_assoc()['count'] : 0;
+
+// --- Fetch Admin Activity ---
+$activity_query = $conn->query("SELECT * FROM admin_activity_logs ORDER BY created_at DESC LIMIT 5");
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -220,6 +230,22 @@ $upcoming_events = $conn->query("SELECT * FROM events ORDER BY id DESC LIMIT 2")
                             <span class="flex items-center bg-red-50 px-2 py-0.5 rounded-full">New</span>
                         </div>
                     </div>
+
+                    <!-- Stat 5: Visitors -->
+                    <div class="bg-white rounded-2xl p-6 shadow-soft card-hover border-l-4 border-pink-500 relative overflow-hidden">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-2">Total Visits</p>
+                                <h3 class="text-3xl font-bold text-slate-800"><?php echo $visitors_count; ?></h3>
+                            </div>
+                            <div class="p-3 bg-pink-50 rounded-xl text-pink-500">
+                                <ion-icon name="eye" class="text-2xl"></ion-icon>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex items-center text-xs font-medium text-pink-600">
+                            <span class="flex items-center bg-pink-100 px-2 py-0.5 rounded-full"><ion-icon name="people" class="mr-1"></ion-icon> <?php echo $unique_visitors_count; ?> Unique</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Main Grid -->
@@ -266,6 +292,33 @@ $upcoming_events = $conn->query("SELECT * FROM events ORDER BY id DESC LIMIT 2")
                                     <?php endwhile; ?>
                                 <?php else: ?>
                                     <div class="p-4 text-center text-gray-400 text-sm">No new messages.</div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+
+                        <!-- Recent Admin Activity -->
+                        <div class="bg-white rounded-2xl shadow-soft border-slate-100 overflow-hidden">
+                            <div class="px-6 py-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                                <h3 class="font-bold text-slate-800 text-lg">Recent Admin Activity</h3>
+                            </div>
+                            <div class="divide-y divide-slate-100">
+                                <?php if (isset($activity_query) && $activity_query->num_rows > 0): ?>
+                                    <?php while ($log = $activity_query->fetch_assoc()): ?>
+                                        <div class="px-6 py-4 hover:bg-slate-50 transition-colors flex items-center gap-4">
+                                            <div class="h-10 w-10 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center">
+                                                <ion-icon name="construct" class="text-lg"></ion-icon>
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <div class="flex justify-between">
+                                                    <h4 class="text-sm font-bold text-slate-800 truncate"><?php echo htmlspecialchars($log['action']); ?></h4>
+                                                    <span class="text-xs text-slate-400"><?php echo date("M d H:i", strtotime($log['created_at'])); ?></span>
+                                                </div>
+                                                <p class="text-xs text-slate-500 truncate"><?php echo htmlspecialchars($log['details']); ?></p>
+                                            </div>
+                                        </div>
+                                    <?php endwhile; ?>
+                                <?php else: ?>
+                                    <div class="p-4 text-center text-gray-400 text-sm">No recent activity logged.</div>
                                 <?php endif; ?>
                             </div>
                         </div>
