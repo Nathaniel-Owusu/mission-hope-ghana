@@ -34,61 +34,61 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <nav class="flex-1 overflow-y-auto sidebar-scroll px-4 space-y-1 py-4 relative z-10">
         <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Main Menu</p>
 
-        <a href="dashboard.php" class="sidebar-link <?php echo basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active bg-white/10 text-white' : ''; ?> flex items-center px-4 py-3 rounded-lg text-slate-300 transition-all group">
+        <a href="dashboard" class="sidebar-link <?php echo basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active bg-white/10 text-white' : ''; ?> flex items-center px-4 py-3 rounded-lg text-slate-300 transition-all group">
             <ion-icon name="grid-outline" class="text-xl mr-3 group-hover:text-amber-400 <?php echo basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'text-amber-400' : ''; ?>"></ion-icon>
             <span class="font-medium text-sm">Dashboard</span>
         </a>
 
-        <a href="announcement.php" class="sidebar-link <?php echo basename($_SERVER['PHP_SELF']) == 'announcement.php' ? 'active bg-white/10 text-white' : ''; ?> flex items-center px-4 py-3 rounded-lg text-slate-300 transition-all group">
+        <a href="announcement" class="sidebar-link <?php echo basename($_SERVER['PHP_SELF']) == 'announcement.php' ? 'active bg-white/10 text-white' : ''; ?> flex items-center px-4 py-3 rounded-lg text-slate-300 transition-all group">
             <ion-icon name="megaphone-outline" class="text-xl mr-3 group-hover:text-amber-400 <?php echo basename($_SERVER['PHP_SELF']) == 'announcement.php' ? 'text-amber-400' : ''; ?>"></ion-icon>
             <span class="font-medium text-sm">Announcements</span>
         </a>
 
-        <a href="leadership.php" class="sidebar-link <?php echo basename($_SERVER['PHP_SELF']) == 'leadership.php' ? 'active bg-white/10 text-white' : ''; ?> flex items-center px-4 py-3 rounded-lg text-slate-300 transition-all group">
+        <a href="leadership" class="sidebar-link <?php echo basename($_SERVER['PHP_SELF']) == 'leadership.php' ? 'active bg-white/10 text-white' : ''; ?> flex items-center px-4 py-3 rounded-lg text-slate-300 transition-all group">
             <ion-icon name="people-outline" class="text-xl mr-3 group-hover:text-amber-400 <?php echo basename($_SERVER['PHP_SELF']) == 'leadership.php' ? 'text-amber-400' : ''; ?>"></ion-icon>
             <span class="font-medium text-sm">Leadership</span>
         </a>
 
-        <a href="departments.php" class="sidebar-link <?php echo basename($_SERVER['PHP_SELF']) == 'departments.php' ? 'active bg-white/10 text-white' : ''; ?> flex items-center px-4 py-3 rounded-lg text-slate-300 transition-all group">
+        <a href="departments" class="sidebar-link <?php echo basename($_SERVER['PHP_SELF']) == 'departments.php' ? 'active bg-white/10 text-white' : ''; ?> flex items-center px-4 py-3 rounded-lg text-slate-300 transition-all group">
             <ion-icon name="briefcase-outline" class="text-xl mr-3 group-hover:text-amber-400 <?php echo basename($_SERVER['PHP_SELF']) == 'departments.php' ? 'text-amber-400' : ''; ?>"></ion-icon>
             <span class="font-medium text-sm">Departments</span>
         </a>
 
         <p class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-6 mb-2">Management</p>
 
-        <a href="events.php" class="sidebar-link <?php echo basename($_SERVER['PHP_SELF']) == 'events.php' ? 'active bg-white/10 text-white' : ''; ?> flex items-center px-4 py-3 rounded-lg text-slate-300 transition-all group">
+        <a href="events" class="sidebar-link <?php echo basename($_SERVER['PHP_SELF']) == 'events.php' ? 'active bg-white/10 text-white' : ''; ?> flex items-center px-4 py-3 rounded-lg text-slate-300 transition-all group">
             <ion-icon name="calendar-outline" class="text-xl mr-3 group-hover:text-amber-400 <?php echo basename($_SERVER['PHP_SELF']) == 'events.php' ? 'text-amber-400' : ''; ?>"></ion-icon>
             <span class="font-medium text-sm">Events</span>
         </a>
 
-        <a href="media.php" class="sidebar-link <?php echo basename($_SERVER['PHP_SELF']) == 'media.php' ? 'active bg-white/10 text-white' : ''; ?> flex items-center px-4 py-3 rounded-lg text-slate-300 transition-all group">
+        <a href="media" class="sidebar-link <?php echo basename($_SERVER['PHP_SELF']) == 'media.php' ? 'active bg-white/10 text-white' : ''; ?> flex items-center px-4 py-3 rounded-lg text-slate-300 transition-all group">
             <ion-icon name="images-outline" class="text-xl mr-3 group-hover:text-amber-400 <?php echo basename($_SERVER['PHP_SELF']) == 'media.php' ? 'text-amber-400' : ''; ?>"></ion-icon>
             <span class="font-medium text-sm">Media Library</span>
         </a>
 
-        <a href="sermons.php" class="sidebar-link <?php echo basename($_SERVER['PHP_SELF']) == 'sermons.php' ? 'active bg-white/10 text-white' : ''; ?> flex items-center px-4 py-3 rounded-lg text-slate-300 transition-all group">
+        <a href="sermons" class="sidebar-link <?php echo basename($_SERVER['PHP_SELF']) == 'sermons.php' ? 'active bg-white/10 text-white' : ''; ?> flex items-center px-4 py-3 rounded-lg text-slate-300 transition-all group">
             <ion-icon name="videocam-outline" class="text-xl mr-3 group-hover:text-amber-400 <?php echo basename($_SERVER['PHP_SELF']) == 'sermons.php' ? 'text-amber-400' : ''; ?>"></ion-icon>
             <span class="font-medium text-sm">Sermons</span>
         </a>
 
-        <a href="messages.php" class="sidebar-link <?php echo basename($_SERVER['PHP_SELF']) == 'messages.php' ? 'active bg-white/10 text-white' : ''; ?> flex items-center px-4 py-3 rounded-lg text-slate-300 transition-all group">
+        <a href="messages" class="sidebar-link <?php echo basename($_SERVER['PHP_SELF']) == 'messages.php' ? 'active bg-white/10 text-white' : ''; ?> flex items-center px-4 py-3 rounded-lg text-slate-300 transition-all group">
             <div class="relative mr-3">
                 <ion-icon name="mail-outline" class="text-xl group-hover:text-amber-400 <?php echo basename($_SERVER['PHP_SELF']) == 'messages.php' ? 'text-amber-400' : ''; ?>"></ion-icon>
             </div>
             <span class="font-medium text-sm">Inbox</span>
         </a>
 
-        <a href="sms.php" class="sidebar-link <?php echo basename($_SERVER['PHP_SELF']) == 'sms.php' ? 'active bg-white/10 text-white' : ''; ?> flex items-center px-4 py-3 rounded-lg text-slate-300 transition-all group">
+        <a href="sms" class="sidebar-link <?php echo basename($_SERVER['PHP_SELF']) == 'sms.php' ? 'active bg-white/10 text-white' : ''; ?> flex items-center px-4 py-3 rounded-lg text-slate-300 transition-all group">
             <ion-icon name="chatbubbles-outline" class="text-xl mr-3 group-hover:text-amber-400 <?php echo basename($_SERVER['PHP_SELF']) == 'sms.php' ? 'text-amber-400' : ''; ?>"></ion-icon>
             <span class="font-medium text-sm">SMS Blast</span>
         </a>
 
-        <a href="attendance.php" class="sidebar-link <?php echo basename($_SERVER['PHP_SELF']) == 'attendance.php' ? 'active bg-white/10 text-white' : ''; ?> flex items-center px-4 py-3 rounded-lg text-slate-300 transition-all group">
+        <a href="attendance" class="sidebar-link <?php echo basename($_SERVER['PHP_SELF']) == 'attendance.php' ? 'active bg-white/10 text-white' : ''; ?> flex items-center px-4 py-3 rounded-lg text-slate-300 transition-all group">
             <ion-icon name="stats-chart-outline" class="text-xl mr-3 group-hover:text-amber-400 <?php echo basename($_SERVER['PHP_SELF']) == 'attendance.php' ? 'text-amber-400' : ''; ?>"></ion-icon>
             <span class="font-medium text-sm">Attendance</span>
         </a>
 
-        <a href="settings.php" class="sidebar-link <?php echo basename($_SERVER['PHP_SELF']) == 'settings.php' ? 'active bg-white/10 text-white' : ''; ?> flex items-center px-4 py-3 rounded-lg text-slate-300 transition-all group">
+        <a href="settings" class="sidebar-link <?php echo basename($_SERVER['PHP_SELF']) == 'settings.php' ? 'active bg-white/10 text-white' : ''; ?> flex items-center px-4 py-3 rounded-lg text-slate-300 transition-all group">
             <ion-icon name="settings-outline" class="text-xl mr-3 group-hover:text-amber-400 <?php echo basename($_SERVER['PHP_SELF']) == 'settings.php' ? 'text-amber-400' : ''; ?>"></ion-icon>
             <span class="font-medium text-sm">Settings</span>
         </a>
