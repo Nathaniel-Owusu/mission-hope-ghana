@@ -415,13 +415,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_sms'])) {
                                                 <?php
                                                 $found = false;
                                                 foreach ($senderIds as $sid) {
-                                                    $selected = (strcasecmp($sid['sender_name'], 'MissionHope') === 0) ? 'selected' : '';
+                                                    // Prioritize 'missionhope' (or case-insensitive match)
+                                                    $selected = (strcasecmp($sid['sender_name'], 'missionhope') === 0) ? 'selected' : '';
                                                     if ($selected) $found = true;
                                                     echo '<option value="' . $sid['id'] . '" ' . $selected . '>' . htmlspecialchars($sid['sender_name']) . '</option>';
                                                 }
                                                 // If not found in API list, allow manual entry fallback (though API requires ID, this is a UX hint)
                                                 if (!$found && empty($senderIds)) {
-                                                    echo '<option value="" disabled>No Sender IDs found. Please register "MissionHope".</option>';
+                                                    echo '<option value="" disabled>No Sender IDs found. Please register "missionhope".</option>';
                                                 }
                                                 ?>
                                             <?php else: ?>
