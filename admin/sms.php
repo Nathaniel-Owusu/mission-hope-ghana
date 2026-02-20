@@ -3,20 +3,32 @@ include 'db.php';
 include 'adverse_sms_client.php';
 
 // Initialize Adverse SMS Client
-$apiKey = 'adv_9c0d08bdc5c3927f593b25b4aff7b2cb5e86d99477deaa34bade62321b252dd8';
+$apiKey = 'adv_717737f8c1e621d07ba254c8c1cf0ab1e7d4a4da798ce85abfa4faa60831e10b';
 $smsClient = new AdverseSmsClient($apiKey);
 
-// Fetch Balance & Sender IDs
+// Fetch Account Data
 $balance = 0;
 $senderIds = [];
+$apiCampaigns = [];
+$apiContactLists = [];
 $error_api = "";
 
 try {
+    // 1. Balance
     $balanceData = $smsClient->getBalance();
     $balance = $balanceData['data']['credits_balance'] ?? 0;
 
+    // 2. Sender IDs
     $senderIdsData = $smsClient->listApprovedSenderIds();
     $senderIds = $senderIdsData['data']['sender_ids'] ?? [];
+
+    // 3. Recent Campaigns (Fetch 5)
+    $campData = $smsClient->listCampaigns(1, 5);
+    $apiCampaigns = $campData['data']['campaigns'] ?? [];
+
+    // 4. Contact Lists
+    $listData = $smsClient->listContactLists();
+    $apiContactLists = $listData['data']['lists'] ?? [];
 } catch (Exception $e) {
     $error_api = "API Error: " . $e->getMessage();
 }
@@ -493,38 +505,68 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_sms'])) {
                         </button>
                     </div>
 
-                    <!-- Recent History -->
+                    <!-- Recent Broadcasts (API) -->
                     <div class="bg-white rounded-2xl shadow-soft border border-slate-100 overflow-hidden text-sm">
                         <div class="p-5 border-b border-slate-100 bg-slate-50/50">
-                            <h6 class="text-xs font-bold text-slate-500 uppercase tracking-widest">Recent Broadcasts</h6>
+                            <h6 class="text-xs font-bold text-slate-500 uppercase tracking-widest">Recent Broadcasts (API)</h6>
                         </div>
-                        <div class="divide-y divide-slate-100 max-h-[400px] overflow-y-auto" id="historyList">
+                        <div class="divide-y divide-slate-100 max-h-[300px] overflow-y-auto" id="historyList">
                             <?php
-                            $history_res = $conn->query("SELECT * FROM sms_history ORDER BY created_at DESC LIMIT 5");
-                            if ($history_res->num_rows > 0) {
-                                while ($item = $history_res->fetch_assoc()) {
-                                    $statusClass = $item['status'] == 'Sent' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-600';
+                            if (!empty($apiCampaigns)) {
+                                foreach ($apiCampaigns as $camp) {
+                                    $s = strtolower($camp['status']);
+                                    $statusClass = 'bg-slate-100 text-slate-600';
+                                    if (in_array($s, ['sent', 'delivered'])) $statusClass = 'bg-emerald-100 text-emerald-700';
+                                    elseif ($s == 'failed') $statusClass = 'bg-red-100 text-red-600';
+                                    elseif ($s == 'scheduled') $statusClass = 'bg-blue-100 text-blue-600';
+
+                                    $title = !empty($camp['title']) ? $camp['title'] : substr($camp['message'], 0, 20) . '...';
                             ?>
                                     <div class="history-item p-4 hover:bg-slate-50 transition-colors">
                                         <div class="flex justify-between items-start mb-1">
-                                            <span class="font-bold text-slate-700 truncate w-32 item-message"><?php echo htmlspecialchars(substr($item['message'], 0, 20)) . '...'; ?></span>
-                                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase item-status <?php echo $statusClass; ?>"><?php echo htmlspecialchars($item['status']); ?></span>
+                                            <span class="font-bold text-slate-700 truncate w-32 item-message"><?php echo htmlspecialchars($title); ?></span>
+                                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase item-status <?php echo $statusClass; ?>"><?php echo htmlspecialchars($camp['status']); ?></span>
                                         </div>
-                                        <p class="text-slate-500 text-xs mb-2 line-clamp-2"><?php echo htmlspecialchars($item['message']); ?></p>
+                                        <p class="text-slate-500 text-xs mb-2 line-clamp-2"><?php echo htmlspecialchars($camp['message']); ?></p>
                                         <div class="flex justify-between text-[10px] text-slate-400">
-                                            <span>To: <?php echo htmlspecialchars(substr($item['recipients'], 0, 15)); ?></span>
-                                            <span><?php echo date('M d, H:i', strtotime($item['created_at'])); ?></span>
+                                            <span><?php echo $camp['recipients_count']; ?> Recipients</span>
+                                            <span><?php echo date('M d, H:i', strtotime($camp['created_at'])); ?></span>
                                         </div>
                                     </div>
                             <?php
                                 }
                             } else {
-                                echo '<div class="p-4 text-center text-slate-400 italic">No history yet.</div>';
+                                echo '<div class="p-4 text-center text-slate-400 italic">No recent campaigns.</div>';
                             }
                             ?>
                         </div>
-                        <div class="p-3 bg-slate-50 text-center border-t border-slate-100">
-                            <button class="text-emerald-600 text-xs font-bold hover:text-emerald-700 transition-colors">View All History</button>
+                    </div>
+
+                    <!-- Contact Lists (API) -->
+                    <div class="bg-white rounded-2xl shadow-soft border border-slate-100 overflow-hidden text-sm">
+                        <div class="p-5 border-b border-slate-100 bg-slate-50/50">
+                            <h6 class="text-xs font-bold text-slate-500 uppercase tracking-widest">Adverse Contact Lists</h6>
+                        </div>
+                        <div class="divide-y divide-slate-100 max-h-[200px] overflow-y-auto">
+                            <?php
+                            if (!empty($apiContactLists)) {
+                                foreach ($apiContactLists as $list) {
+                            ?>
+                                    <div class="p-4 hover:bg-slate-50 transition-colors flex justify-between items-center">
+                                        <div>
+                                            <h4 class="font-bold text-slate-700"><?php echo htmlspecialchars($list['name']); ?></h4>
+                                            <span class="text-[10px] text-slate-400"><?php echo date('M d, Y', strtotime($list['created_at'])); ?></span>
+                                        </div>
+                                        <div class="bg-blue-50 text-blue-600 px-2 py-1 rounded text-xs font-bold">
+                                            <?php echo $list['contacts_count']; ?> Contacts
+                                        </div>
+                                    </div>
+                            <?php
+                                }
+                            } else {
+                                echo '<div class="p-4 text-center text-slate-400 italic">No contact lists found.</div>';
+                            }
+                            ?>
                         </div>
                     </div>
 
