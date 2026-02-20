@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 
 include 'adverse_sms_client.php';
 
-$apiKey = 'adv_f8dc982f5c52f87f09dfe9141a74c5fb96a8dfecd521b934e5e7d2b8cf5561cb';
+$apiKey = 'adv_e6114025a7b004e7561db36184ee54274acf46ac4141de9fd43d4fb9fcb85ed8';
 
 echo "<h2>Adverse API Connection Test</h2>";
 echo "<p>API Key: " . substr($apiKey, 0, 10) . "...</p>";
