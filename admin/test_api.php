@@ -14,7 +14,7 @@ echo "<hr>";
 
 // Step 0: Test Auth Verify endpoint (recommended by Adverse support)
 echo "<h3>0. Testing Auth Verify Endpoint...</h3>";
-$ch = curl_init('https://app.adverseforms.com/api/v1/auth/verify');
+$ch = curl_init('https://services.getadverse.com/api/v1/auth/verify');
 curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_HTTPHEADER => [
