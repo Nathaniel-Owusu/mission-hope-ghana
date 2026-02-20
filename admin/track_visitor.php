@@ -15,7 +15,14 @@ $ip_address = $_SERVER['REMOTE_ADDR'];
 $page_url = $_SERVER['REQUEST_URI'];
 $user_agent = $_SERVER['HTTP_USER_AGENT'];
 
-// Insert into logs
-$stmt = $conn->prepare("INSERT INTO visitor_logs (ip_address, page_url, user_agent) VALUES (?, ?, ?)");
-$stmt->bind_param("sss", $ip_address, $page_url, $user_agent);
-$stmt->execute();
+// Only log if this IP has never visited before
+$check = $conn->prepare("SELECT id FROM visitor_logs WHERE ip_address = ? LIMIT 1");
+$check->bind_param("s", $ip_address);
+$check->execute();
+$check->store_result();
+
+if ($check->num_rows === 0) {
+    $stmt = $conn->prepare("INSERT INTO visitor_logs (ip_address, page_url, user_agent) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $ip_address, $page_url, $user_agent);
+    $stmt->execute();
+}

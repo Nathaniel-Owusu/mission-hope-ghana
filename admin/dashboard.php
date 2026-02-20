@@ -235,15 +235,15 @@ $activity_query = $conn->query("SELECT * FROM admin_activity_logs ORDER BY creat
                     <div class="bg-white rounded-2xl p-6 shadow-soft card-hover border-l-4 border-pink-500 relative overflow-hidden">
                         <div class="flex justify-between items-start">
                             <div>
-                                <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-2">Total Visits</p>
-                                <h3 class="text-3xl font-bold text-slate-800"><?php echo $visitors_count; ?></h3>
+                                <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-2">Unique Visitors</p>
+                                <h3 class="text-3xl font-bold text-slate-800"><?php echo $unique_visitors_count; ?></h3>
                             </div>
                             <div class="p-3 bg-pink-50 rounded-xl text-pink-500">
-                                <ion-icon name="eye" class="text-2xl"></ion-icon>
+                                <ion-icon name="people" class="text-2xl"></ion-icon>
                             </div>
                         </div>
                         <div class="mt-4 flex items-center text-xs font-medium text-pink-600">
-                            <span class="flex items-center bg-pink-100 px-2 py-0.5 rounded-full"><ion-icon name="people" class="mr-1"></ion-icon> <?php echo $unique_visitors_count; ?> Unique</span>
+                            <span class="flex items-center bg-pink-100 px-2 py-0.5 rounded-full"><ion-icon name="eye" class="mr-1"></ion-icon> Each person counted once</span>
                         </div>
                     </div>
                 </div>
