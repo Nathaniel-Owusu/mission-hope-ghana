@@ -3,7 +3,7 @@ include 'db.php';
 include 'adverse_sms_client.php';
 
 // Initialize Adverse SMS Client
-$apiKey = 'adv_370c7214d97fa75decbc19cbbd34cf5e68c9733c56ca9524409f9bdb28cc90e5';
+$apiKey = 'adv_9c0d08bdc5c3927f593b25b4aff7b2cb5e86d99477deaa34bade62321b252dd8';
 $smsClient = new AdverseSmsClient($apiKey);
 
 // Fetch Balance & Sender IDs
