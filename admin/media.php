@@ -8,11 +8,6 @@ if (isset($_POST['upload'])) {
     $type = $_POST['type']; // 'image' or 'video'
     $description = $_POST['description']; // Optional description
 
-    // Increase limits for bulk upload
-    ini_set('upload_max_filesize', '100M');
-    ini_set('post_max_size', '100M');
-    ini_set('max_file_uploads', '50');
-
     // Count total files
     $countfiles = count($_FILES['file']['name']);
     $success_count = 0;
@@ -20,46 +15,49 @@ if (isset($_POST['upload'])) {
 
     $target_dir = "../gallery_uploads/";
     if (!is_dir($target_dir)) {
-        mkdir($target_dir, 0777, true);
+        @mkdir($target_dir, 0755, true);
     }
 
-    $allowed = ['jpg', 'jpeg', 'png', 'gif', 'mp4', 'webm', 'ogg'];
+    $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'mp4', 'webm', 'ogg'];
 
-    // Loop through all files
-    for ($i = 0; $i < $countfiles; $i++) {
-        if ($_FILES['file']['error'][$i] == 0) {
-            $filename = basename($_FILES['file']['name'][$i]);
-            $target_file = $target_dir . $filename;
-            $fileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+    if (!is_dir($target_dir) || !is_writable($target_dir)) {
+        $error = "Upload folder is not accessible. Please contact your administrator.";
+    } else {
+        // Loop through all files
+        for ($i = 0; $i < $countfiles; $i++) {
+            if ($_FILES['file']['error'][$i] == 0) {
+                $filename = basename($_FILES['file']['name'][$i]);
+                $fileType = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
 
-            if (in_array($fileType, $allowed)) {
-                // Unique filename to avoid overwrite
-                $unique_name = time() . "_$i" . "_" . $filename;
-                $target_file = $target_dir . $unique_name;
+                if (in_array($fileType, $allowed)) {
+                    // Unique filename to avoid overwrite
+                    $unique_name = time() . "_$i" . "_" . $filename;
+                    $target_file = $target_dir . $unique_name;
 
-                if (move_uploaded_file($_FILES['file']['tmp_name'][$i], $target_file)) {
-                    // Store relative path
-                    $db_path = "gallery_uploads/" . $unique_name;
-                    $title = $countfiles > 1 ? "$title_base ($i)" : $title_base;
+                    if (move_uploaded_file($_FILES['file']['tmp_name'][$i], $target_file)) {
+                        // Store relative path
+                        $db_path = "gallery_uploads/" . $unique_name;
+                        $title = $countfiles > 1 ? "$title_base ($i)" : $title_base;
 
-                    $stmt = $conn->prepare("INSERT INTO media (title, type, file_path, description) VALUES (?, ?, ?, ?)");
-                    $stmt->bind_param("ssss", $title, $type, $db_path, $description);
-                    $stmt->execute();
-                    $success_count++;
+                        $stmt = $conn->prepare("INSERT INTO media (title, type, file_path, description) VALUES (?, ?, ?, ?)");
+                        $stmt->bind_param("ssss", $title, $type, $db_path, $description);
+                        $stmt->execute();
+                        $success_count++;
+                    } else {
+                        $error_count++;
+                    }
                 } else {
                     $error_count++;
                 }
-            } else {
-                $error_count++;
             }
         }
-    }
 
-    if ($success_count > 0) {
-        $msg = "Successfully uploaded $success_count file(s).";
-    }
-    if ($error_count > 0) {
-        $error = "Failed to upload $error_count file(s). Check file types or sizes.";
+        if ($success_count > 0) {
+            $msg = "Successfully uploaded $success_count file(s).";
+        }
+        if ($error_count > 0) {
+            $error = "Failed to upload $error_count file(s). Check file types or sizes.";
+        }
     }
 }
 // Delete logic
