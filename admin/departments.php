@@ -11,10 +11,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_ministry'])) {
     // Main Image Upload
     $image = "";
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-        $target_dir = "../";
-        $target_file = $target_dir . basename($_FILES["image"]["name"]);
+        $target_dir = "../uploads/ministries/";
+        if (!is_dir($target_dir)) mkdir($target_dir, 0777, true);
+        $ext = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
+        $unique_name = 'ministry_' . time() . '_' . uniqid() . '.' . $ext;
+        $target_file = $target_dir . $unique_name;
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-            $image = basename($_FILES["image"]["name"]);
+            $image = "uploads/ministries/" . $unique_name;
         }
     }
 
