@@ -12,12 +12,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_ministry'])) {
     $image = "";
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
         $target_dir = "../uploads/ministries/";
-        if (!is_dir($target_dir)) mkdir($target_dir, 0777, true);
-        $ext = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
-        $unique_name = 'ministry_' . time() . '_' . uniqid() . '.' . $ext;
-        $target_file = $target_dir . $unique_name;
-        if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-            $image = "uploads/ministries/" . $unique_name;
+        // Try to create directory if it doesn't exist
+        if (!is_dir($target_dir)) {
+            @mkdir($target_dir, 0755, true);
+        }
+        if (is_dir($target_dir) && is_writable($target_dir)) {
+            $ext = strtolower(pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION));
+            $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+            if (in_array($ext, $allowed)) {
+                $unique_name = 'ministry_' . time() . '_' . uniqid() . '.' . $ext;
+                $target_file = $target_dir . $unique_name;
+                if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                    $image = "uploads/ministries/" . $unique_name;
+                }
+            }
         }
     }
 

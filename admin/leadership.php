@@ -34,12 +34,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_leader'])) {
     $image = "";
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
         $target_dir = "../uploads/leaders/";
-        if (!is_dir($target_dir)) mkdir($target_dir, 0777, true);
-        $ext = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
-        $unique_name = 'leader_' . time() . '_' . uniqid() . '.' . $ext;
-        $target_file = $target_dir . $unique_name;
-        if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-            $image = "uploads/leaders/" . $unique_name;
+        if (!is_dir($target_dir)) {
+            @mkdir($target_dir, 0755, true);
+        }
+        if (is_dir($target_dir) && is_writable($target_dir)) {
+            $ext = strtolower(pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION));
+            $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+            if (in_array($ext, $allowed)) {
+                $unique_name = 'leader_' . time() . '_' . uniqid() . '.' . $ext;
+                $target_file = $target_dir . $unique_name;
+                if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                    $image = "uploads/leaders/" . $unique_name;
+                }
+            }
         }
     }
 
