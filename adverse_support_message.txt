@@ -1,0 +1,35 @@
+Subject: API Key Authentication Failing — 401 "Invalid or expired API key"
+
+Hi Adverse Support Team,
+
+I am trying to integrate the Adverse Bulk SMS API into my web application but I am unable to authenticate with any of my API keys.
+
+Issue:
+Every API request I make returns a 401 Unauthorized response with the message "Invalid or expired API key". This happens across all endpoints, including the basic GET /v1/sms/balance endpoint.
+
+What I've tried:
+1. Generated multiple API keys from my dashboard — all return the same 401 error.
+2. Tested with both "Authorization: Bearer adv_xxx..." header and "X-API-Key: adv_xxx..." header — same result.
+3. Verified my API key format is correct (adv_ prefix + 64 hex characters = 68 characters total).
+4. Confirmed using the correct base URL: https://services.getadverse.com/api/v1/sms/balance
+5. Tested from both localhost (XAMPP/PHP) and a live Hostinger server — same error from both.
+
+Sample Request:
+GET https://services.getadverse.com/api/v1/sms/balance
+Authorization: Bearer adv_717737f8c1e621d07ba254c8c1cf0ab1e7d4a4da798ce85abfa4faa60831e10b
+Content-Type: application/json
+
+Response received:
+HTTP 401
+{"success": false, "error": {"message": "Invalid or expired API key.", "code": "UNAUTHORIZED"}}
+
+My registered Sender ID: missionhope
+
+Could you please check if:
+1. My account is active and in good standing?
+2. My API keys have the correct SMS scopes enabled (sms:send, sms:read, sms:contacts, sms:sender_ids)?
+3. There is any IP restriction or account-level block preventing API access?
+
+I would appreciate your help resolving this so I can complete my integration.
+
+Thank you.

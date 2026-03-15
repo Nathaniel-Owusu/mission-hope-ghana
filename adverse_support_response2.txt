@@ -1,0 +1,167 @@
+Hi,
+
+Apologies for the confusion with the domain — that was an error on our side.
+
+The correct domain is: https://services.getadverse.com
+Do NOT use app.adverseforms.com — that domain does not exist.
+
+Regarding the 401 error you are still getting: we have now deployed the
+authentication fix to the production server at services.getadverse.com.
+The issue was that the database column storing API keys was too short,
+which corrupted keys during generation.
+
+WHAT YOU NEED TO DO NOW:
+
+1. REGENERATE YOUR API KEY (again — sorry)
+   The fix required a database migration. Any key generated before the
+   migration will not work. You must generate a fresh key:
+   - Log into your dashboard at https://services.getadverse.com
+   - Go to Settings > API Keys
+   - Revoke your existing key(s) including adv_f8dc...
+   - Generate a new API key
+   - Copy and store it securely
+
+2. TEST WITH THE DIAGNOSTIC ENDPOINT
+   curl -X GET https://services.getadverse.com/api/v1/auth/verify \
+     -H "Authorization: Bearer YOUR_NEW_API_KEY"
+
+   Expected success response:
+   {
+     "authenticated": true,
+     "message": "API key is valid.",
+     "key_name": "...",
+     "scopes": [...]
+   }
+
+   If you get a different response, send us the full JSON body and we
+   will investigate immediately.
+
+3. UPDATE YOUR CODE
+   Replace the old API key with the new one. Use one of these headers:
+   - Authorization: Bearer adv_xxxx...
+   - X-API-Key: adv_xxxx...
+
+4. BASE URL (confirmed)
+   https://services.getadverse.com/api/v1/
+
+   Example endpoints:
+   GET  /v1/sms/balance
+   POST /v1/sms/send
+   POST /v1/sms/send/bulk
+   GET  /v1/sms/messages
+   GET  /v1/sms/sender-ids
+
+5. QUICK TEST
+   # Check balance
+   curl -X GET https://services.getadverse.com/api/v1/sms/balance \
+     -H "Authorization: Bearer YOUR_NEW_API_KEY"
+
+   # Send a test SMS
+   curl -X POST https://services.getadverse.com/api/v1/sms/send \
+     -H "Authorization: Bearer YOUR_NEW_API_KEY" \
+     -H "Content-Type: application/json" \
+     -d '{"to": "0241234567", "message": "Test from API", "sender_id": "missionhope"}'
+
+Again, sorry for the domain confusion and the extra key regeneration step.
+If anything else comes up, send us the full response body and we will
+sort it out right away.
+
+Best regards,
+Adverse Forms Support
+
+
+================================================================================
+AI ASSISTANT PROMPT — FIXING ADVERSE FORMS SMS API AUTHENTICATION
+================================================================================
+
+If you are an AI coding assistant helping a developer integrate with the
+Adverse Forms SMS API, read the context below and follow the instructions.
+
+CONTEXT:
+The developer previously received 401 "Invalid or expired API key" errors on
+all SMS API requests. The Adverse Forms team has now fixed the server-side bugs
+(database column length, header forwarding, whitespace parsing) and deployed
+the fix to production. The developer must regenerate their API key and update
+their code.
+
+IMPORTANT: The correct and ONLY domain is:
+  https://services.getadverse.com
+Do NOT use app.adverseforms.com — it does not exist.
+
+WHAT YOU NEED TO DO:
+
+1. Find everywhere in the codebase where the old Adverse Forms SMS API key is
+   stored or referenced. It will look like: adv_ followed by 64 hex characters
+   (68 characters total). Common locations:
+   - .env files (e.g. ADVERSE_API_KEY=adv_...)
+   - Config files (config.js, config.php, settings.py, etc.)
+   - Hardcoded in source files (look for "adv_" or "Bearer adv_")
+
+2. Also find and fix any references to the wrong domain:
+   - Replace "app.adverseforms.com" with "services.getadverse.com" everywhere
+   - The full base URL is: https://services.getadverse.com/api/v1/
+
+3. Replace the old key with the new one the developer has generated from the
+   Adverse Forms dashboard (Settings > API Keys). The developer should paste
+   the new key when prompted.
+
+4. Make sure the API key is sent in requests using ONE of these header formats:
+   - Authorization: Bearer adv_xxxxxxxxxxxx...
+   - X-API-Key: adv_xxxxxxxxxxxx...
+   Do NOT put the key in the URL query string for production use.
+
+5. Verify the base URL is correct:
+   - Production: https://services.getadverse.com/api/v1/
+   - All SMS endpoints are under: /v1/sms/...
+
+6. Test the fix by calling the diagnostic endpoint:
+
+   GET /v1/auth/verify
+   Header: Authorization: Bearer <NEW_API_KEY>
+
+   Expected success response:
+   {
+     "authenticated": true,
+     "message": "API key is valid.",
+     "key_name": "...",
+     "scopes": [...]
+   }
+
+7. If /v1/auth/verify returns success, proceed to test the actual SMS endpoints:
+
+   GET  /v1/sms/balance              — Check SMS credit balance
+   POST /v1/sms/send                 — Send a single SMS
+   POST /v1/sms/send/bulk            — Send bulk SMS
+   GET  /v1/sms/messages             — List sent messages
+   GET  /v1/sms/sender-ids           — List sender IDs
+   POST /v1/sms/sender-ids           — Register a new sender ID
+   GET  /v1/sms/contacts/groups      — List contact groups
+   POST /v1/sms/contacts             — Add contacts
+
+8. Example send request (adapt to the developer's language/framework):
+
+   POST https://services.getadverse.com/api/v1/sms/send
+   Headers:
+     Authorization: Bearer <API_KEY>
+     Content-Type: application/json
+   Body:
+   {
+     "to": "0241234567",
+     "message": "Hello from the API",
+     "sender_id": "missionhope"
+   }
+
+9. Common errors and fixes:
+   - 401 "Invalid or expired API key" → Key is wrong or old. Regenerate it.
+   - 401 "No API key found"           → Header is not being sent. Check your
+                                         HTTP client configuration.
+   - 403 "Insufficient scope"         → Key doesn't have SMS permissions.
+                                         Generate a new key with SMS scope.
+   - 422 "Sender ID not approved"     → Sender ID needs admin approval first.
+
+IMPORTANT: The old API key will NOT work. The developer MUST generate a new one
+from the dashboard before any API calls will succeed.
+
+IMPORTANT: The ONLY valid domain is https://services.getadverse.com
+Do NOT use app.adverseforms.com — it does not exist and will cause DNS errors.
+================================================================================

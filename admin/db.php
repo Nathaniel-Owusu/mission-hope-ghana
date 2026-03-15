@@ -42,6 +42,12 @@ if (!$is_localhost) {
 
 try {
     $conn = new mysqli($server, $username, $password, $dbname);
+    
+    // Explicitly check for connection error as some PHP versions don't throw exceptions by default
+    if ($conn->connect_error) {
+        throw new Exception("Connection failed: " . $conn->connect_error);
+    }
+    
     $conn->set_charset("utf8mb4");
 
     // Create Admin Activity Logs Table (if it doesn't exist)
@@ -55,13 +61,23 @@ try {
 } catch (Exception $e) {
     // Graceful error handling
     if ($is_localhost) {
-        die("<h3>Local Connection Failed</h3><p>" . $e->getMessage() . "</p>");
+        die("<div style='background:#fff5f5; border:1px solid #feb2b2; padding:20px; border-radius:8px; font-family:sans-serif;'>
+                <h3 style='color:#c53030; margin-top:0;'>Local Connection Failed</h3>
+                <p><strong>Error:</strong> " . htmlspecialchars($e->getMessage()) . "</p>
+                <p>Please ensure your MySQL server is running and the database 'missionhope' exists.</p>
+             </div>");
     } else {
+        // Log the actual error for the admin
+        error_log("Database Connection Error: " . $e->getMessage());
+        
         // Generic error message for production users
-        error_log($e->getMessage());
-        die("<div style='text-align:center; padding:50px; font-family:sans-serif;'>
-                <h2 style='color:#e53e3e'>Service Temporarily Unavailable</h2>
-                <p>We are experiencing technical difficulties. Please try again later.</p>
+        die("<div style='text-align:center; padding:50px; font-family:sans-serif; background:#f7fafc; min-height:100vh;'>
+                <div style='max-width:500px; margin:0 auto; background:white; padding:40px; border-radius:15px; shadow:0 4px 6px rgba(0,0,0,0.1);'>
+                    <h2 style='color:#e53e3e; margin-top:0;'>Service Temporarily Unavailable</h2>
+                    <p style='color:#4a5568; line-height:1.6;'>We are experiencing technical difficulties connecting to our database. Our team has been notified.</p>
+                    <p style='color:#718096; font-size:14px; margin-top:20px;'>Please try again in a few minutes.</p>
+                    <a href='index.php' style='display:inline-block; margin-top:20px; padding:10px 20px; background:#2d6a52; color:white; text-decoration:none; border-radius:5px;'>Retry</a>
+                </div>
              </div>");
     }
 }
